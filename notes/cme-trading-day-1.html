@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0c0e0d">
+  <title>CME Trading Day 1 · Conor Linkston</title>
+  <meta name="description" content="Notes from day one of a CME trading challenge: sizing mistakes, a stop that nearly flipped the book, and eight lessons.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230c0e0d'/%3E%3Ctext x='5' y='23' font-family='monospace' font-size='18' fill='%23e8b04a'%3Ecl%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main class="article">
+  <a class="back" href="../index.html#notes">← back to conor-linkston</a>
+
+  <header>
+    <div class="meta"><span>CME Trading Challenge · Day 1</span><span>19 Aug 2026</span><span>66 participants · $1m simulated · 15 days</span></div>
+    <h1>The P&amp;L is the least interesting thing that happened</h1>
+    <p class="dek">Roughly −1% on the day. One position closed at a loss, one round-tripped a large drawdown back to breakeven, and one trade taken outside the plan.</p>
+  </header>
+
+  <h2>What actually happened</h2>
+  <p><strong>Morning.</strong> I built a book on two theses: long crude on the Hormuz supply shock, and short natural gas on the US storage surplus. I entered 1 E-mini WTI at 85.00 with a stop at 82.95, which was 1% of what I believed was a $100,000 account.</p>
+  <p><strong>Midday.</strong> Available cash showed $992,563.50. The account was $1,000,000, not $100,000. Every position I held was a tenth of the size I intended. I'd been trading a 0.18% risk book while believing it was 1.8%.</p>
+  <p><strong>Rescaled.</strong> I added 4 full-size CL and scaled up the gas short. Then I found a 10-contract-per-product cap in the rules, having already submitted 13 lots of gas, so I bought 3 back.</p>
+  <p><strong>Then I found a live error in my own orders.</strong> My working stops on natural gas covered 13 contracts against a 10-contract short. If price had hit 2.862, the stop would have closed the position and opened a fresh 3-lot long in a market I was bearish on, with no protection. I caught it before it fired.</p>
+  <p><strong>Afternoon.</strong> Gas ground higher against me, from 2.785 to 2.81 to 2.83. I cut it at roughly −$4,500 with the stop still 3.2 cents away. Then crude fell from 85.00 to 83.50. The book was down about $10,000. I held the stop at 82.95, crude came all the way back to 85.00, and the drawdown disappeared.</p>
+  <p>Separately, outside the plan, I shorted the Nasdaq into the semiconductor selloff. It worked.</p>
+
+  <h2>Eight things I learned</h2>
+
+  <h3>1. Verify the platform before you size anything</h3>
+  <p>Account value, margin per contract, tick value, contract month, position caps. It's five minutes of checking, and I did it after my first trade instead of before. It cost me four hours holding 10% of my intended position.</p>
+  <p class="rule">Reconcile every number on the ticket against my own arithmetic before the first order of any competition.</p>
+
+  <h3>2. Margin capacity and risk capacity are not the same number</h3>
+  <p>Margin on E-mini WTI was $4,088 against $42,500 notional. The platform would have let me hold 24 contracts. My risk limit allowed 10. Accounts blow up in the gap between what a platform permits and what a risk framework permits.</p>
+
+  <h3>3. Good fundamentals don't make a good trade</h3>
+  <p>The gas short had the cleanest fundamental case on the board: 198 Bcf above the five-year average and a surplus that widened through the hottest part of summer. It was still the wrong trade. It was low-beta and mean-reverting, and the best realistic outcome was +2% of the account. In a competition where returns come from trending moves, a trade can be analytically right and still not be worth its slot.</p>
+  <p class="rule">Judge a trade on its payoff relative to the opportunity, not on how clean the thesis reads.</p>
+
+  <h3>4. When the tape keeps ignoring your fundamentals, it usually knows first</h3>
+  <p>Gas rose for four sessions in a row against a bearish storage picture. I read that as noise. It was the market pricing Texas heat and record grid demand before the data showed it. The fundamental case wasn't wrong. The timing was, and price was telling me so.</p>
+
+  <h3>5. The stop exists so I don't have to decide in a drawdown</h3>
+  <p>At 83.50, crude felt like freefall. Cutting there would have locked in about $6,800 on a position that ended the day flat. The only reason I didn't is that I'd set the stop at a structural level in advance and left it alone.</p>
+  <p>I nearly fell into a pattern, though. I cut gas early at 2.83 with the stop at 2.862, then thought about cutting crude early too. Repeat that and you bleed an account without a single stop ever firing. If I override the stop, I don't have a risk limit, I have a suggestion.</p>
+
+  <h3>6. Liquidity is a hard filter, not a preference</h3>
+  <p>Apple single-stock futures showed 10 contracts of daily volume, and Amazon showed 6. Compare that with 39,096 for crude and 115,526 for the S&amp;P. In a market that thin, a stop fills wherever the next bid happens to be, and the whole risk framework falls apart.</p>
+  <p class="rule">Check volume before analysing the setup, not after.</p>
+
+  <h3>7. Correlation hides inside "diversification"</h3>
+  <p>I nearly added Brent on top of a WTI position, which is the same Hormuz bet twice. I also considered going long EUR/USD while holding a short-bond thesis, which are two contradictory takes on the same Fed view.</p>
+  <p class="rule">Before adding anything, ask what single headline would take out both it and what I already hold.</p>
+
+  <h3>8. Don't take a position that depends on an event I can't forecast</h3>
+  <p>I have no edge on what an FOMC release says. I might have an edge on how the market reacts, because that plays out over minutes in public. Positioning beforehand risks being gapped through a stop with no decision available. Waiting only risks missing part of a move, and missing a move costs nothing.</p>
+
+  <h2>The framework I ended the day with</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th scope="col">Layer</th><th scope="col">Job</th><th scope="col">Question it answers</th></tr></thead>
+      <tbody>
+        <tr><td>Macro</td><td>Direction and size</td><td>Why does this move happen?</td></tr>
+        <tr><td>Technical</td><td>Entry and stop</td><td>Where am I wrong, at a price?</td></tr>
+        <tr><td>Calendar</td><td>Timing</td><td>What could invalidate this before it plays out?</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>If I can't write one sentence for each, I don't have a trade, I have a hunch. For the gas short, the macro sentence was strong, the technical one was weak and I'd ignored the calendar one. Two out of three produced a 0.45% loss.</p>
+
+  <h2>Errors log</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th scope="col">Error</th><th scope="col">Cost</th><th scope="col">Fix</th></tr></thead>
+      <tbody>
+        <tr><td>Didn't verify account size before sizing</td><td>4 hrs at 10% of intended size</td><td>Reconcile platform numbers first</td></tr>
+        <tr><td>Exceeded the 10-contract product cap</td><td>Rule breach, nothing realised</td><td>Read the rules fully before day 1</td></tr>
+        <tr><td>Stop quantity exceeded position size</td><td>Would have flipped me long, unprotected</td><td>Count working orders against open contracts every time</td></tr>
+        <tr><td>Picked a low-payoff trade on thesis quality</td><td>~$4,500</td><td>Judge payoff relative to opportunity</td></tr>
+        <tr><td>Cut a position early, ahead of its stop</td><td>~$1,250 vs holding to the stop</td><td>Set the stop, then leave it</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>The honest assessment</h2>
+  <p>One session isn't evidence of skill. Semiconductors sold off hard that day, so anyone short tech looked sharp. Separating skill from a good session takes months of results.</p>
+  <p>What the day does show is a set of habits worth keeping: cut a bad trade quickly, hold a good one through noise, catch an error in my own orders before it costs anything, and refuse an illiquid instrument on structure rather than on view. Those are worth building on. The P&amp;L isn't.</p>
+
+  <div class="end">
+    <a class="btn" href="../index.html#notes">← All notes</a>
+    <a class="btn" href="asset-management-sim.html">Next: asset management sim →</a>
+  </div>
+</main>
+</body>
+</html>

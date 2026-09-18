@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0c0e0d">
+  <title>Asset Management Sim · Conor Linkston</title>
+  <meta name="description" content="Review of an AmplifyME global macro asset management simulation: what went right, and why rebalancing scored 46%.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230c0e0d'/%3E%3Ctext x='5' y='23' font-family='monospace' font-size='18' fill='%23e8b04a'%3Ecl%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main class="article">
+  <a class="back" href="../index.html#notes">← back to conor-linkston</a>
+
+  <header>
+    <div class="meta"><span>AmplifyME asset management simulation</span><span>Aug 2026</span><span>9th of 71</span></div>
+    <h1>9th of 71, and the one score that let me down</h1>
+    <p class="dek">A 92-minute global macro, multi-asset, long-only book run over four quarters. My macro calls were right almost all the way through. My rebalancing wasn't.</p>
+  </header>
+
+  <h2>The mandate</h2>
+  <ul>
+    <li>$20m starting capital, a 12-month horizon split into four quarters</li>
+    <li>Benchmark fixed at 50% equity, 30% commodities, 20% fixed income, with ±10% allowed per asset class</li>
+    <li>At least 90% invested at the start of each quarter, a maximum of $5m in any single product, no more than $500k lost on any one position, and no shorting</li>
+  </ul>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th scope="col">Metric</th><th scope="col">Score</th></tr></thead>
+      <tbody>
+        <tr><td>Risk appetite</td><td>91%</td></tr>
+        <tr><td>Return on investment</td><td>96%</td></tr>
+        <tr><td>Buy-side risk management</td><td>96%</td></tr>
+        <tr><td><strong>Portfolio rebalancing</strong></td><td><strong>46%</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>I finished about $2m up on $20m, ahead of the benchmark.</p>
+
+  <h2>What went right</h2>
+  <p><strong>The macro reading was consistently good.</strong> The news followed 2018 closely: staged US–China tariffs, OPEC+ supply swings, the Turkish and Argentine crises, a hawkish Fed, then de-escalation and easing. I identified each theme correctly and positioned for it.</p>
+  <p><strong>I got out of the trade war early.</strong> I sold Shanghai equities, iron ore and emerging markets on the first tariff escalation, before the $200bn round and before talks were cancelled.</p>
+  <p><strong>I traded oil well in both directions.</strong> I trimmed on the OPEC+ production increase, exited on the IEA demand warning, then rebuilt on the December cut. It finished as one of the best positions in the book at roughly +$560k.</p>
+  <p><strong>I re-entered China on the first trade-talks headline</strong> rather than the third. That was the largest single gain, at around +$731k.</p>
+  <p><strong>Risk management held.</strong> No position ever breached the $500k loss limit, and the worst one was closed well before it got close.</p>
+
+  <h2>What went wrong: rebalancing, 46%</h2>
+  <p>This is the one clear failure, and it's worth understanding precisely because it's a process problem, not a judgement problem. The score measures time spent inside the asset class bounds continuously, not just at quarter ends.</p>
+  <ol>
+    <li><strong>Execution lag.</strong> I repeatedly identified the right trade, then held off for three or four headlines before executing. Every one of those gaps was time spent in breach.</li>
+    <li><strong>Sitting on the bounds.</strong> Equity spent long stretches pinned at the 40% floor. Commodities sat below 20% for five headlines after I cut iron ore too hard.</li>
+    <li><strong>Over-cutting.</strong> Trims turned into near-full exits. Iron ore went from $3.1m to $437k when I meant a partial trim, and that caused the commodity breach.</li>
+  </ol>
+  <p>Two other habits cost me. I traded gold six times in the first quarter to capture what was really one move, while the benchmark held a flat $2m and got the same exposure. And I kept sizing up on the second or third headline in a theme, by which point the move was priced in. Switching to acting on the first headline and then holding turned performance around straight away in Q2.</p>
+
+  <h2>What I'd fix</h2>
+  <ol>
+    <li><strong>Check class weights before every trade, not after.</strong> Size the trade so the portfolio stays compliant.</li>
+    <li><strong>Execute immediately or not at all.</strong> A trade that isn't taken within one headline is no longer the same trade.</li>
+    <li><strong>Trim means trim.</strong> Specify the target position value, not the amount to sell.</li>
+    <li><strong>Keep positions off the bounds on purpose.</strong> Sitting at a limit means the next headline forces a trade whatever my view is. Staying mid-band keeps options open.</li>
+    <li><strong>Fewer, larger, earlier positions.</strong> The trades that made money were taken on the first signal and held. The ones that lost money were the round trips.</li>
+  </ol>
+
+  <div class="end">
+    <a class="btn" href="../index.html#notes">← All notes</a>
+    <a class="btn" href="cme-trading-day-1.html">Next: CME trading day 1 →</a>
+  </div>
+</main>
+</body>
+</html>

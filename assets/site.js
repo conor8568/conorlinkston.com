@@ -1,0 +1,271 @@
+// Page behaviour: hero decode, market backdrop, scroll effects, count-ups, certificate showcase, nav highlight.
+(() => {
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const GLYPHS = "0123456789$%+−.σμλΣΔβ∑≈";
+  const rnd = (s) => s[Math.floor(Math.random() * s.length)];
+
+  /* ---------- text decode: characters cycle through market glyphs, then lock in left to right ---------- */
+  function decode(el, { text = el.dataset.text || el.textContent, delay = 0, stagger = 45, spin = 380, onDone } = {}) {
+    if (still) { el.textContent = text; onDone?.(); return; }
+    const chars = [...text];
+    el.textContent = "";
+    const spans = chars.map((c) => {
+      const s = document.createElement("span");
+      s.className = "ch"; s.textContent = c === " " ? " " : rnd(GLYPHS);
+      if (c !== " ") s.classList.add("sc");
+      el.appendChild(s);
+      return s;
+    });
+    const t0 = performance.now() + delay;
+    let last = 0;
+    const tick = (now) => {
+      let done = 0;
+      const reroll = now - last > 55;
+      if (reroll) last = now;
+      chars.forEach((c, i) => {
+        const s = spans[i];
+        if (c === " ") { done++; return; }
+        if (now >= t0 + i * stagger + spin) {
+          if (s.classList.contains("sc")) { s.textContent = c; s.classList.remove("sc"); }
+          done++;
+        } else if (now >= t0 && reroll) s.textContent = rnd(GLYPHS);
+      });
+      if (done < chars.length) requestAnimationFrame(tick);
+      else { el.textContent = text; onDone?.(); }
+    };
+    requestAnimationFrame(tick);
+  }
+
+  /* ---------- hero ---------- */
+  const [first, last] = document.querySelectorAll(".hero-name .decode");
+  if (first) {
+    // Lock each word to its real width so the scrambled glyphs can't push the line around.
+    const lock = (el) => { el.style.width = el.getBoundingClientRect().width + "px"; };
+    const unlock = (el) => () => { el.style.width = ""; };
+    const start = () => {
+      lock(first); lock(last);
+      decode(first, { delay: 100, stagger: 55, onDone: unlock(first) });
+      decode(last, { delay: 330, stagger: 55, onDone: unlock(last) });
+    };
+    (document.fonts?.ready || Promise.resolve()).then(start);
+  }
+  const role = document.querySelector(".hero .decode-line");
+  if (role) decode(role, { delay: 900, stagger: 12, spin: 260 });
+
+  // the name gets a price line drawn underneath it
+  const sparkPath = document.getElementById("spark-path"), sparkDot = document.getElementById("spark-dot");
+  if (sparkPath) {
+    const n = 70, pts = [];
+    let y = 28;
+    for (let i = 0; i < n; i++) {
+      y += (Math.random() - 0.56) * 5.2;          // slight upward drift
+      y = Math.max(6, Math.min(36, y));
+      if (i > n - 8) y = Math.max(4, y - 1.6);      // finish strong
+      pts.push([(i / (n - 1)) * 600, y]);
+    }
+    const draw = (k) => {
+      const seg = pts.slice(0, Math.max(2, k));
+      sparkPath.setAttribute("d", seg.map((p, i) => `${i ? "L" : "M"}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(""));
+      const e = seg[seg.length - 1];
+      sparkDot.setAttribute("cx", e[0]); sparkDot.setAttribute("cy", e[1]);
+    };
+    if (still) draw(n);
+    else {
+      const t0 = performance.now() + 700, dur = 1300;
+      const tick = (now) => {
+        const p = Math.min(1, Math.max(0, (now - t0) / dur));
+        draw(Math.round(2 + (1 - (1 - p) ** 3) * (n - 2)));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      draw(2);
+      requestAnimationFrame(tick);
+    }
+  }
+
+  /* ---------- backdrop: faint random-walk price paths drifting left ---------- */
+  const cv = document.getElementById("market");
+  if (cv) {
+    const ctx = cv.getContext("2d");
+    const STEP = 7, SPEED = 14; // px between points, px per second
+    let W = 0, H = 0, paths = [], offset = 0, lastT = 0, raf = 0;
+    const mk = (band, color, width) => {
+      const pts = [];
+      let y = band;
+      for (let x = -STEP; x <= W + STEP * 2; x += STEP) { y = walk(y, band); pts.push(y); }
+      return { band, color, width, pts };
+    };
+    const walk = (y, band) => {
+      const pull = (band - y) * 0.02;
+      return y + pull + (Math.random() - 0.5) * 9;
+    };
+    const setup = () => {
+      const dpr = Math.min(2, devicePixelRatio || 1);
+      W = innerWidth; H = innerHeight;
+      cv.width = W * dpr; cv.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      paths = [
+        mk(H * 0.22, "rgba(58,66,60,.9)", 1),
+        mk(H * 0.40, "rgba(232,176,74,.16)", 1.2),
+        mk(H * 0.55, "rgba(58,66,60,.8)", 1),
+        mk(H * 0.72, "rgba(57,135,229,.14)", 1.2),
+      ];
+      offset = 0;
+    };
+    const render = () => {
+      ctx.clearRect(0, 0, W, H);
+      for (const p of paths) {
+        ctx.beginPath();
+        p.pts.forEach((y, i) => { const x = i * STEP - STEP - offset; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+        ctx.strokeStyle = p.color; ctx.lineWidth = p.width; ctx.stroke();
+      }
+    };
+    const loop = (t) => {
+      raf = requestAnimationFrame(loop);
+      if (t - lastT < 33) return;           // ~30fps is plenty for something this slow
+      const dt = lastT ? (t - lastT) / 1000 : 0; lastT = t;
+      offset += SPEED * dt;
+      while (offset >= STEP) {
+        offset -= STEP;
+        for (const p of paths) { p.pts.shift(); p.pts.push(walk(p.pts[p.pts.length - 1], p.band)); }
+      }
+      render();
+    };
+    setup(); render();
+    let rt;
+    addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { setup(); render(); }, 150); });
+    if (!still) {
+      raf = requestAnimationFrame(loop);
+      document.addEventListener("visibilitychange", () => {
+        cancelAnimationFrame(raf); lastT = 0;
+        if (!document.hidden) raf = requestAnimationFrame(loop);
+      });
+    }
+  }
+
+  /* ---------- count-up numbers (hero) ---------- */
+  document.querySelectorAll(".count[data-to]").forEach((el) => {
+    if (still) return;
+    const to = +el.dataset.to, pre = el.dataset.prefix || "", suf = el.dataset.suffix || "";
+    const final = el.textContent, t0 = performance.now() + 1900, dur = 1100;
+    const tick = (now) => {
+      const p = Math.min(1, Math.max(0, (now - t0) / dur));
+      el.textContent = pre + Math.round(to * (1 - (1 - p) ** 3)) + suf;
+      if (p < 1) requestAnimationFrame(tick); else el.textContent = final;
+    };
+    el.textContent = pre + "0" + suf;
+    requestAnimationFrame(tick);
+  });
+
+  /* ---------- scroll effects ---------- */
+  if (!still && "IntersectionObserver" in window) {
+    // cards render in behind a scan line
+    const cards = document.querySelectorAll(".principles > div, .project, .chart-card, .bcard, .note, .edu .card, .timeline > li, .showcase, .caveat, .lessons li, .table-wrap, .stats");
+    cards.forEach((c) => c.classList.add("q-card", "q-wait"));
+    const cardIO = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      cardIO.unobserve(e.target);
+      e.target.classList.remove("q-wait");
+      e.target.classList.add("q-in");
+      e.target.addEventListener("animationend", (ev) => { if (ev.animationName === "q-render") e.target.classList.remove("q-in"); });
+    }), { rootMargin: "0px 0px -8% 0px" });
+    cards.forEach((c) => cardIO.observe(c));
+
+    // numbers scramble through digits before settling
+    const scramble = (el) => {
+      const final = el.textContent, t0 = performance.now(), dur = 650;
+      const tick = (now) => {
+        const p = (now - t0) / dur;
+        if (p >= 1) { el.textContent = final; return; }
+        const lock = Math.floor(p * final.length);
+        el.textContent = [...final].map((c, i) => (i < lock || !/[0-9]/.test(c) ? c : rnd("0123456789"))).join("");
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    const nums = [...document.querySelectorAll(".stat .v, .bcard .big-n, .grades b, .scores b, .ledger .d")].filter((n) => !n.children.length);
+    const numIO = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      numIO.unobserve(e.target); scramble(e.target);
+    }), { rootMargin: "0px 0px -10% 0px" });
+    nums.forEach((n) => numIO.observe(n));
+
+    // section headings decode as they arrive
+    const heads = [...document.querySelectorAll("section.block h2")].filter((h) => !h.children.length);
+    const headIO = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      headIO.unobserve(e.target);
+      const h = e.target, text = h.textContent;
+      h.setAttribute("aria-label", text);
+      h.classList.add("q-h", "q-busy");
+      decode(h, { text, stagger: 22, spin: 220, onDone: () => { h.classList.remove("q-busy"); h.removeAttribute("aria-label"); } });
+    }), { rootMargin: "0px 0px -15% 0px" });
+    heads.forEach((h) => headIO.observe(h));
+  }
+
+  /* ---------- certificate showcase + rail ---------- */
+  const certCards = [...document.querySelectorAll(".rail .card-btn")];
+  const figs = [...document.querySelectorAll(".viewer .cert")];
+  const detail = document.querySelector(".detail");
+  const pad = (n) => String(n).padStart(2, "0");
+  let current = 0, swapTimer;
+
+  const fill = (c) => {
+    document.getElementById("cert-issuer").textContent = c.dataset.issuer;
+    document.getElementById("cert-title").textContent = c.dataset.title;
+    document.getElementById("cert-desc").textContent = c.dataset.desc;
+    document.getElementById("cert-date").textContent = c.dataset.date;
+  };
+
+  const select = (i, { scroll = false } = {}) => {
+    i = (i + certCards.length) % certCards.length;
+    if (i === current && detail.dataset.ready) return;
+    current = i;
+    const c = certCards[i];
+    certCards.forEach((x) => (x === c ? x.setAttribute("aria-current", "true") : x.removeAttribute("aria-current")));
+    figs.forEach((f) => f.classList.toggle("is-on", f.dataset.cert === c.dataset.show));
+    document.getElementById("cert-n").textContent = pad(i + 1);
+
+    clearTimeout(swapTimer);
+    if (still || !detail.dataset.ready) fill(c);
+    else { detail.classList.add("swap"); swapTimer = setTimeout(() => { fill(c); detail.classList.remove("swap"); }, 180); }
+    detail.dataset.ready = "1";
+
+    if (scroll) c.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "nearest", inline: "nearest" });
+  };
+
+  if (certCards.length) {
+    document.getElementById("cert-total").textContent = pad(certCards.length);
+    select(0);
+    certCards.forEach((c, i) => {
+      c.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") select(i); });
+      c.addEventListener("focus", () => select(i));
+      c.addEventListener("click", () => {
+        select(i);
+        // On a single-column layout the certificate sits above the rail, so bring it into view.
+        if (matchMedia("(max-width: 900px)").matches)
+          document.querySelector(".viewer")?.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "center" });
+      });
+      c.addEventListener("keydown", (e) => {
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        e.preventDefault();
+        const next = (i + (e.key === "ArrowRight" ? 1 : -1) + certCards.length) % certCards.length;
+        certCards[next].focus({ preventScroll: true });
+        certCards[next].scrollIntoView({ behavior: still ? "auto" : "smooth", block: "nearest", inline: "nearest" });
+      });
+    });
+    document.querySelectorAll(".arrow[data-step]").forEach((b) =>
+      b.addEventListener("click", () => select(current + +b.dataset.step, { scroll: true })));
+  }
+
+  /* ---------- highlight the section currently in view ---------- */
+  const links = [...document.querySelectorAll(".bar nav a")];
+  const map = new Map(links.map((a) => [a.getAttribute("href").slice(1), a]));
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      links.forEach((a) => a.removeAttribute("aria-current"));
+      map.get(e.target.id)?.setAttribute("aria-current", "true");
+    });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  map.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
+})();

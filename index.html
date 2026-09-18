@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0c0e0d">
+  <title>Conor Linkston</title>
+  <meta name="description" content="Conor Linkston: Mathematics, Statistics and Finance at the University of Strathclyde. Portfolio construction, equity research and finance work experience.">
+  <link rel="canonical" href="https://conorlinkston.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Conor Linkston">
+  <meta property="og:description" content="Maths, Statistics and Finance at Strathclyde. Portfolio construction, equity research and honest backtests.">
+  <meta property="og:image" content="https://conorlinkston.com/assets/og.png">
+  <meta property="og:url" content="https://conorlinkston.com/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230c0e0d'/%3E%3Ctext x='5' y='23' font-family='monospace' font-size='18' fill='%23e8b04a'%3Ecl%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true">
+  <canvas id="market"></canvas>
+  <svg class="skyline" viewBox="0 0 1200 210" preserveAspectRatio="xMidYMax slice">
+    <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+      <!-- low buildings, left -->
+      <path d="M0 200 V178 H22 V168 H44 V184 H58 V172"/>
+      <!-- Elizabeth Tower -->
+      <path d="M58 200 V100 H80 V200 M58 100 L69 64 L80 100 M69 64 V52 M58 118 H80"/><circle cx="69" cy="109" r="5.5"/>
+      <!-- London Eye -->
+      <circle cx="160" cy="128" r="60"/><circle cx="160" cy="128" r="4"/>
+      <path d="M160 68 V188 M100 128 H220 M118 86 L202 170 M202 86 L118 170 M130 76 L190 180 M190 76 L130 180 M108 98 L212 158 M212 98 L108 158 M160 128 L132 200 M160 128 L188 200"/>
+      <!-- mid buildings -->
+      <path d="M232 200 V160 H262 V148 H286 V170 H306 V156 H326 V200"/>
+      <!-- St Paul's -->
+      <path d="M338 200 V168 H414 V200 M350 168 V150 H402 V168 M352 150 Q376 96 400 150 M372 112 H380 V104 H372 Z M376 104 V92 M372 97 H380"/>
+      <!-- Walkie-Talkie -->
+      <path d="M456 200 L452 118 Q448 94 478 90 Q510 90 508 112 L502 200"/>
+      <!-- Cheesegrater -->
+      <path d="M526 200 V78 L580 200 M526 110 L541 110 M526 140 L554 140 M526 170 L567 170"/>
+      <!-- Gherkin -->
+      <path d="M598 200 C590 150 596 96 621 66 C646 96 652 150 644 200 M604 170 L638 130 M600 140 L630 104 M608 196 L644 160"/>
+      <!-- 22 Bishopsgate + towers -->
+      <path d="M660 200 V56 H694 V200 M700 200 V92 H722 V200"/>
+      <!-- The Shard -->
+      <path d="M748 200 L782 14 L790 14 L826 200 M782 14 L778 4 M790 14 L795 2 M768 90 L806 90"/>
+      <!-- low buildings -->
+      <path d="M836 200 V172 H862 V160 H880 V200"/>
+      <!-- Tower Bridge -->
+      <path d="M880 162 H1110 M930 200 V92 H956 V200 M930 92 L943 66 L956 92 M1034 200 V92 H1060 V200 M1034 92 L1047 66 L1060 92 M956 104 H1034 M956 112 H1034 M880 162 Q906 124 930 118 M1060 118 Q1084 124 1110 162 M930 132 H956 M1034 132 H1060"/>
+      <!-- low buildings, right -->
+      <path d="M1110 200 V176 H1136 V164 H1160 V182 H1182 V170 H1200"/>
+      <path d="M0 200 H1200"/>
+    </g>
+  </svg>
+</div>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="#top">~/<span>conor</span><span class="full">-linkston</span></a>
+    <nav aria-label="Sections">
+      <a href="#work"><b>01</b>work</a>
+      <a href="#experience"><b>02</b>experience</a>
+      <a href="#education"><b>03</b>education</a>
+      <a href="#beyond"><b>04</b>beyond</a>
+      <a href="#record"><b>05</b>record</a>
+      <a href="#notes"><b>06</b>notes</a>
+      <a href="#contact"><b>07</b>contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============================ HERO ============================ -->
+<section class="hero" id="top">
+  <div class="glow" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <p class="avail"><i aria-hidden="true"></i>Open to 2027 summer internships</p>
+    <h1 class="hero-name" aria-label="Conor Linkston">
+      <span class="decode" data-text="Conor" aria-hidden="true">Conor</span>
+      <span class="decode" data-text="Linkston" aria-hidden="true">Linkston</span><span class="dot" aria-hidden="true">.</span>
+    </h1>
+    <svg class="spark" viewBox="0 0 600 40" preserveAspectRatio="none" aria-hidden="true"><path id="spark-path" d=""/><circle id="spark-dot" r="3.5" cx="0" cy="0"/></svg>
+    <p class="role"><span class="decode-line" data-text="Mathematics, Statistics & Finance · University of Strathclyde">Mathematics, Statistics &amp; Finance · University of Strathclyde</span></p>
+    <p class="lede">I test whether the clever answer beats the simple one, and <em>say so when it doesn't.</em></p>
+    <div class="links">
+      <a class="btn primary" href="#work">See the work ↓</a>
+      <a class="btn" href="assets/Conor_Linkston_CV.pdf" download>CV (PDF) ↓</a>
+      <a class="btn" href="https://www.linkedin.com/in/conorlinkston" rel="noopener">linkedin</a>
+      <a class="btn" href="https://github.com/conor8568" rel="noopener">github</a>
+    </div>
+  </div>
+
+  <div class="wrap hero-stats" aria-label="Headline numbers">
+    <div><span class="count" data-to="1" data-suffix="st">1st</span><small>of 66 · 24h M&amp;A challenge</small></div>
+    <div><span class="count" data-to="10" data-prefix="top " data-suffix="%">top 10%</span><small>CFA Institute global finalist</small></div>
+    <div><span class="count" data-to="97" data-suffix="%">97%</span><small>Maths &amp; Stats Computing</small></div>
+    <div><span class="count" data-to="10" data-prefix="&gt;" data-suffix="×">&gt;10×</span><small>my P&amp;L vs 4th place · trading sim</small></div>
+  </div>
+</section>
+
+<div class="ticker" aria-label="Selected results">
+  <div class="ticker-track">
+    <ul>
+      <li>HEDGE FUND SIM <b>1st / 65</b></li>
+      <li>24H M&amp;A CHALLENGE <b>1st / 66</b></li>
+      <li>SALES &amp; TRADING SIM <b>3rd / 67</b></li>
+      <li>CFA INSTITUTE CHALLENGE <b>Global finalist</b> <span class="up">top 10%</span></li>
+      <li>MATHS &amp; STATS COMPUTING <b>97%</b></li>
+      <li>1/N vs RESAMPLED <b>Sharpe 0.643 / 0.636</b></li>
+      <li>NKE <b>BUY</b> <span class="up">▲ $55 target</span></li>
+      <li>BEST STOCK PITCH <b>AmplifyME cohort</b></li>
+      <li>LIBF LEVEL 6 DIPLOMA <b>Distinction</b></li>
+    </ul>
+    <ul aria-hidden="true">
+      <li>HEDGE FUND SIM <b>1st / 65</b></li>
+      <li>24H M&amp;A CHALLENGE <b>1st / 66</b></li>
+      <li>SALES &amp; TRADING SIM <b>3rd / 67</b></li>
+      <li>CFA INSTITUTE CHALLENGE <b>Global finalist</b> <span class="up">top 10%</span></li>
+      <li>MATHS &amp; STATS COMPUTING <b>97%</b></li>
+      <li>1/N vs RESAMPLED <b>Sharpe 0.643 / 0.636</b></li>
+      <li>NKE <b>BUY</b> <span class="up">▲ $55 target</span></li>
+      <li>BEST STOCK PITCH <b>AmplifyME cohort</b></li>
+      <li>LIBF LEVEL 6 DIPLOMA <b>Distinction</b></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================ HOW I WORK ============================ -->
+<section class="block">
+  <div class="wrap">
+    <p class="label reveal"><b>00</b> how i work</p>
+    <p class="big reveal" style="max-width:38em">
+      I study maths, stats and finance, and I build things on the side to learn the parts a module
+      doesn't get to. Three habits run through all of it.
+    </p>
+    <div class="principles reveal">
+      <div>
+        <span class="n">01</span>
+        <h3>Always benchmark</h3>
+        <p>A result means nothing without something simple next to it. Every strategy I test goes up against equal weight, and if the clever one loses, that is the finding.</p>
+      </div>
+      <div>
+        <span class="n">02</span>
+        <h3>Say what a metric measures first</h3>
+        <p>I learned this one the hard way at Balfour Beatty (more below). Before I put a number in front of someone I check that it's actually comparing like with like.</p>
+      </div>
+      <div>
+        <span class="n">03</span>
+        <h3>AI as a tool, not a worker</h3>
+        <p>I use AI agents to write a lot of code, and I hold myself to being able to defend every line of it. I write down what I corrected, what I rejected and where I went elsewhere.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ WORK ============================ -->
+<section class="block" id="work">
+  <div class="wrap">
+    <p class="label reveal"><b>01</b> work</p>
+    <h2 class="reveal">Selected work</h2>
+    <p class="prose reveal">Two code projects, an equity pitch and an M&amp;A case. The charts are built from my own outputs, so hover over them for the numbers.</p>
+
+    <!-- ---------- PROJECT 1 ---------- -->
+    <article class="project reveal" aria-labelledby="p1">
+      <div class="project-head">
+        <div class="meta">
+          <span class="tag">Python · pandas · NumPy · SciPy · pytest</span>
+          <span>2026</span>
+          <span class="status">Phase 1 complete</span>
+        </div>
+        <h3 class="title" id="p1">Robust Portfolio Optimisation Engine</h3>
+        <p class="prose">
+          Mean-variance optimisation is an error maximiser. It takes noisy estimates, trusts them completely,
+          and bets heavily on whatever looked best last year. I built a walk-forward backtester to measure
+          how much that actually costs, then tested two of the textbook fixes against each other on identical inputs.
+          It grew out of my second-year essay on Michaud's resampled efficiency as an answer to Markowitz.
+        </p>
+      </div>
+
+      <div class="project-body">
+        <dl class="spec">
+          <div><dt>Universe</dt><dd>7 ETFs · equity, bonds, gold, property</dd></div>
+          <div><dt>Period</dt><dd>2005–2026 · 5,430 days</dd></div>
+          <div><dt>Lookback</dt><dd>252 days</dd></div>
+          <div><dt>Rebalance</dt><dd>monthly</dd></div>
+          <div><dt>Costs</dt><dd>10 bps turnover</dd></div>
+          <div><dt>Evaluation</dt><dd>walk-forward, out of sample</dd></div>
+        </dl>
+
+        <ol class="pipeline" aria-label="How the pipeline fits together">
+          <li><b>Price data</b><span>data/</span></li>
+          <li><b>Estimate inputs</b><span>estimation/</span></li>
+          <li><b>Choose weights</b><span>optimisation/</span></li>
+          <li><b>Backtest honestly</b><span>backtest/</span></li>
+          <li><b>Compare to benchmark</b><span>benchmarks/</span></li>
+          <li class="later"><b>AI market views</b><span>phase 3</span></li>
+        </ol>
+
+        <p class="callout">
+          Markowitz loses to equal weight, and not narrowly.
+          <small>It earns less while taking more risk: 18.4% volatility against 13.1%. That's the opposite of what a method built to optimise risk is supposed to do. It also traded 349% a year to get there.</small>
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <caption>Out of sample, net of costs · reproduce with <code>python3 scripts/run_backtest.py</code></caption>
+            <thead><tr><th scope="col">strategy</th><th scope="col">ann. return</th><th scope="col">ann. vol</th><th scope="col">Sharpe</th><th scope="col">max DD</th><th scope="col">turnover</th></tr></thead>
+            <tbody>
+              <tr class="bench"><td>Equal weight (1/N)</td><td>7.86%</td><td>13.10%</td><td>0.643</td><td>−36.7%</td><td class="win">2.4%</td></tr>
+              <tr><td>Markowitz (λ=3)</td><td>7.44%</td><td>18.36%</td><td>0.483</td><td>−31.7%</td><td>349%</td></tr>
+              <tr><td>Markowitz + Ledoit-Wolf</td><td>7.44%</td><td>18.36%</td><td>0.483</td><td>−31.6%</td><td>348%</td></tr>
+              <tr class="hl"><td>Markowitz + resampling</td><td class="win">8.28%</td><td>14.07%</td><td>0.636</td><td>−29.5%</td><td>220%</td></tr>
+              <tr><td>Minimum variance</td><td>3.67%</td><td class="win">5.35%</td><td class="win">0.700</td><td class="win">−19.7%</td><td>30.4%</td></tr>
+              <tr><td>Minimum variance + LW</td><td>3.59%</td><td>5.32%</td><td>0.689</td><td>−19.8%</td><td>29.9%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="two">
+          <div>
+            <h4>Why it loses</h4>
+            <ol class="diag">
+              <li data-n="01"><b>It isn't diversifying.</b><p>It holds 1.6 of 7 assets on average, with 85% in the biggest one. Every month it picks a favourite, piles in, and changes its mind the next month. That's not a portfolio, it's a sequence of bets.</p></li>
+              <li data-n="02"><b>Costs aren't the cause.</b><p>With costs switched off it still loses (0.502 vs 0.643). The decisions are bad, not just expensive.</p></li>
+              <li data-n="03"><b>The expected returns carry no signal.</b><p>In a typical window, not even the best-looking asset has a mean return distinguishable from zero (median largest |t| = 1.79, against 1.96). The covariance matrix is fine. The problem is μ.</p></li>
+            </ol>
+          </div>
+          <figure class="chart-card">
+            <figcaption><span class="ct">Which fix works</span><span class="cs">assets held above 1% weight, of 7</span></figcaption>
+            <div style="position:relative"><ul class="hbars" id="concentration" style="--lab:170px;--lab-sm:130px"></ul></div>
+            <p class="prose" style="font-size:14.5px;margin:14px 0 0">
+              Shrinkage is a correct implementation of a tool aimed at a problem this project doesn't have. It chose a median intensity of 0.055 and changed nothing.
+              Resampling goes after μ, and the optimiser goes from making one bet to holding a real portfolio.
+            </p>
+          </figure>
+        </div>
+
+        <div class="two">
+          <figure class="chart-card">
+            <figcaption><span class="ct">The risk-aversion sweep</span><span class="cs">Markowitz Sharpe by λ</span></figcaption>
+            <div class="chart" id="sweep"></div>
+          </figure>
+          <div>
+            <h4>Not reporting the best row</h4>
+            <p class="prose">
+              λ is the one number in the strategy I <strong>choose</strong> rather than estimate, so it's the easiest place to
+              fit the model to its own test set. I fixed λ=3 from the literature before running anything, then published the whole curve instead of the best result.
+            </p>
+            <p class="prose">
+              Performance improves the more the optimiser ignores its own return forecasts, steadily from λ=1 to λ=50.
+              One lucky value would be suspicious. A trend across a 50-fold range is a property of the data, and it points to the same conclusion as the diagnostics.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <h4>What I got wrong along the way</h4>
+          <ul class="lessons">
+            <li><b>The off-by-one</b>One character, <code>:t</code> against <code>:t+1</code>, separates a valid backtest from a fantasy. Nothing in the output would look wrong.</li>
+            <li><b>Forward-fill vs backfill</b><code>ffill()</code> and <code>bfill()</code> are one character apart, and one of them is lookahead bias with no visible symptom. There's now a test for it.</li>
+            <li><b>A test that couldn't fail</b>My first engine test passed because the rule meant to churn the portfolio never churned. Next time the test gets written before the engine.</li>
+          </ul>
+          <blockquote class="pull" style="margin-top:24px">
+            The dangerous errors here aren't the ones that crash. They're the ones that produce a plausible number.
+            <cite>findings.md, §12</cite>
+          </blockquote>
+        </div>
+
+        <div class="caveat">
+          <h4>Caveats, stated up front</h4>
+          <p>Resampling still doesn't beat 1/N. 0.636 against 0.643 is a tie at best, and 1/N gets there trading 2.4% a year instead of 220%. Minimum variance tops the Sharpe column by hiding 88% in bonds during an exceptional run for bonds. Next up: regime awareness (Phase 2), then LLM-generated views into Black-Litterman (Phase 3), evaluated out of sample like everything else. I've written my prediction for Phase 3 down in advance: it helps, but by less than resampling did.</p>
+        </div>
+      </div>
+
+      <div class="project-foot">
+        <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation" rel="noopener">Repository →</a>
+        <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation/blob/main/docs/findings.md" rel="noopener">Research log</a>
+        <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation/blob/main/docs/ai-methodology.md" rel="noopener">How I used AI</a>
+      </div>
+    </article>
+
+    <!-- ---------- PROJECT 2 ---------- -->
+    <article class="project reveal" aria-labelledby="p2">
+      <div class="project-head">
+        <div class="meta">
+          <span class="tag">R · tidyverse · tidyquant · quadprog · SQL</span>
+          <span>2025</span>
+          <span class="status wip">v2 in progress</span>
+        </div>
+        <h3 class="title" id="p2">FTSE 100 Risk &amp; Portfolio Analysis</h3>
+        <p class="prose">
+          My first proper project, built in R to get ahead of a tidyverse module. Ten years of FTSE 100 data
+          (2015–2025), twelve large caps, and two simple long-only portfolios measured against the index.
+          I picked the period on purpose: it covers QE-era low rates, the COVID shock, and the 2022–24 rate hikes,
+          because diversification that only works in calm markets isn't worth much.
+        </p>
+      </div>
+
+      <div class="project-body">
+        <div class="stats">
+          <div class="stat"><div class="k">Min variance</div><div class="v up">5.45%</div><div class="s">ann. return · 9.99% vol</div></div>
+          <div class="stat"><div class="k">Equal weight</div><div class="v">1.95%</div><div class="s">ann. return · 11.75% vol</div></div>
+          <div class="stat"><div class="k">FTSE 100</div><div class="v">1.95%</div><div class="s">ann. return · 12.22% vol</div></div>
+          <div class="stat"><div class="k">Sharpe (rf = 0)</div><div class="v">0.53</div><div class="s">vs 0.16 index · 0.16 EW</div></div>
+        </div>
+
+        <figure class="chart-card">
+          <figcaption><span class="ct">Growth of £1, January 2015 to December 2024</span><span class="cs">monthly log returns, compounded</span></figcaption>
+          <ul class="legend">
+            <li style="color:var(--s-2)"><i></i><span style="color:var(--text-2)">Minimum variance</span></li>
+            <li style="color:var(--s-1)"><i></i><span style="color:var(--text-2)">Equal weight</span></li>
+            <li style="color:var(--s-bench)"><i class="dash"></i><span style="color:var(--text-2)">FTSE 100 index</span></li>
+          </ul>
+          <div class="chart" id="growth"></div>
+          <details class="data">
+            <summary>View as table</summary>
+            <div class="table-wrap">
+              <table id="growth-table">
+                <thead><tr><th scope="col">month</th><th scope="col">min var</th><th scope="col">equal wt</th><th scope="col">FTSE</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </details>
+        </figure>
+
+        <div class="two">
+          <figure class="chart-card">
+            <figcaption><span class="ct">Where minimum variance put the money</span><span class="cs">long-only weights</span></figcaption>
+            <div style="position:relative"><ul class="hbars" id="weights" style="--lab:120px;--lab-sm:100px"></ul></div>
+          </figure>
+          <div>
+            <h4>What it found</h4>
+            <p class="prose">
+              Minimum variance had lower volatility and shallower drawdowns than the index across every regime.
+              It leaned into defensive, steady names like Unilever, LSEG and National Grid and dropped BP, BAT and Vodafone entirely.
+            </p>
+            <p class="prose">
+              The more interesting result was the correlation structure. Stocks that looked diversified in calm markets moved
+              together when COVID hit, which is exactly when diversification is supposed to help. <strong>The benefit disappeared when it was needed most.</strong>
+            </p>
+          </div>
+        </div>
+
+        <div class="caveat">
+          <h4>What I'd flag now, a year on</h4>
+          <p>The minimum variance weights were fitted on the full ten years and then scored on the same ten years. That's in-sample, so the chart above flatters it. Fixing exactly this problem is what the portfolio engine above is built around.</p>
+          <p>The index is the ^FTSE price series, so it leaves out the dividends that the adjusted stock prices include. That makes the gap to the index look bigger than it really is.</p>
+          <p>v2, currently on a branch, moves the pipeline into a SQLite database with a proper schema and adds an Excel Power Query version of the analysis.</p>
+        </div>
+      </div>
+
+      <div class="project-foot">
+        <a class="btn" href="https://github.com/conor8568/ftse-portfolio-analysis" rel="noopener">Repository →</a>
+      </div>
+    </article>
+
+    <!-- ---------- PROJECT 3 ---------- -->
+    <article class="project reveal" aria-labelledby="p3">
+      <div class="project-head">
+        <div class="meta">
+          <span class="tag">Equity research · valuation</span>
+          <span>Aug 2026</span>
+          <span>AmplifyME Summer Analyst Programme</span>
+        </div>
+        <h3 class="title" id="p3">Nike: just buy it</h3>
+        <p class="prose">
+          A contrarian stock pitch, picked as the best in the cohort. I presented it to the full group and defended it under questioning,
+          then led a breakout team that developed it further and placed 2nd.
+        </p>
+      </div>
+
+      <div class="project-body">
+        <div class="stats">
+          <div class="stat"><div class="k">NKE · NYSE</div><div class="v"><span class="rating"><span class="buy">BUY</span></span></div><div class="s">prices as of 20 Aug 2026</div></div>
+          <div class="stat"><div class="k">Price</div><div class="v">~$40</div><div class="s">12-year low · −78% from 2021</div></div>
+          <div class="stat"><div class="k">Target</div><div class="v up">$55</div><div class="s">~38% implied upside</div></div>
+          <div class="stat"><div class="k">Basis</div><div class="v">21×</div><div class="s">FY27E EPS $2.57</div></div>
+        </div>
+
+        <div class="two">
+          <div>
+            <h4>The thesis</h4>
+            <p class="prose">The market has taken a bad patch and priced it as permanent decline. Nike is earnings-depressed, not distressed.</p>
+            <ul class="thesis">
+              <li><b>Demand doesn't go away.</b> Everyone needs footwear, and often. Nike is still the category leader across Nike, Jordan and Converse, and brand equity on that scale doesn't evaporate in two weak years.</li>
+              <li><b>Running is a tailwind.</b> On and Hoka took share, but Nike still has the distribution, athletes and R&amp;D to win it back.</li>
+              <li><b>Fashion moves fast.</b> Sneaker culture comes in waves. One strong product cycle could bring it back faster than the market is pricing.</li>
+              <li><b>A self-help turnaround.</b> Elliott Hill is resetting wholesale, clearing inventory and refocusing on sport-led product. That's the classic setup for margin recovery once comps normalise.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Valuation</h4>
+            <p class="prose">
+              At $40 Nike trades on 18.6× trailing earnings, half its ten-year average of 37×. The $55 target uses a deliberately
+              conservative 21× on FY27 EPS of $2.57, still below its own history and assuming only a partial recovery.
+              The street's consensus target of $50.66 suggests even cautious analysts think it's oversold, and a 4.2% dividend
+              yield with 20+ years of increases pays you to wait.
+            </p>
+            <h4 style="margin-top:22px">What would break it</h4>
+            <ul class="thesis risks">
+              <li>The turnaround takes years. JPMorgan sees FY2028 as stabilisation, not growth.</li>
+              <li>China stays weak (revenue −17% currency-neutral in Q4).</li>
+              <li>Share lost to On and Hoka turns out to be structural.</li>
+              <li>More margin pressure from tariffs and discounting.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="muted mono" style="font-size:12px;margin:0">A student pitch written for a training programme, not investment advice.</p>
+      </div>
+    </article>
+
+    <!-- ---------- PROJECT 4 ---------- -->
+    <article class="project reveal" aria-labelledby="p4">
+      <div class="project-head">
+        <div class="meta">
+          <span class="tag">Three-statement model · DCF · comps · sum of the parts · accretion/dilution</span>
+          <span>Sep 2026</span>
+          <span class="status">1st of 66</span>
+        </div>
+        <h3 class="title" id="p4">Disney: worth more in pieces?</h3>
+        <p class="prose">
+          AmplifyME's 24-hour M&amp;A challenge. The brief was a full valuation of Disney, a test of whether a three-way
+          break-up unlocks value, and a look at buying Electronic Arts. My model came 1st of 66: fastest to finish, with 100% on accuracy.
+          The question underneath it all: is Disney worth more as three businesses than as one, and if the market is discounting it,
+          is buying EA a better use of its shares?
+        </p>
+      </div>
+
+      <div class="project-body">
+        <div class="stats">
+          <div class="stat"><div class="k">Share price</div><div class="v">$106.16</div><div class="s">12 May 2026</div></div>
+          <div class="stat"><div class="k">Blended fair value</div><div class="v up">$132.98</div><div class="s">DCF · EV/revenue · EV/EBITDA</div></div>
+          <div class="stat"><div class="k">Break-up</div><div class="v">−$8.35</div><div class="s">per share, like for like</div></div>
+          <div class="stat"><div class="k">EA deal</div><div class="v">−19.3%</div><div class="s">EPS dilution in year one</div></div>
+        </div>
+
+        <ol class="diag">
+          <li data-n="01"><b>The discount is real, but fragile.</b><p>Weighting the DCF and both trading multiples equally puts fair value 20% above the share price. But using peer medians instead of a mean dragged up by Netflix, both multiples legs fall to $77 and $89. The DCF upside also needs beta to stay at 0.45, when it only breaks even at 0.92.</p></li>
+          <li data-n="02"><b>The break-up case was comparing unlike numbers.</b><p>The segment DCFs add up to $144.47 a share, which looks better than the $132.98 standalone. But that's an enterprise value, and the standalone figure is equity. Take off $19.84 of net debt per share and the parts are worth $124.63, so splitting up destroys $8.35 a share. It's the same check I learned at Balfour Beatty: know what a number measures before you compare it.</p></li>
+          <li data-n="03"><b>EA doesn't pay for itself.</b><p>At a 30% premium Disney would be paying 73.6× EA's earnings with shares valued at 14.1×. The modelled $500m of synergies is worth about $5.3bn, a third of the $15.1bn premium. Justifying the price would take $1.43bn a year, nearly three times the modelled figure. The debt side is fine (leverage goes from 1.90× to 2.35× against a 3.0× covenant). The problem is the price.</p></li>
+        </ol>
+
+        <p class="muted mono" style="font-size:12px;margin:0">The case materials belong to AmplifyME, so the deck isn't posted here. The figures above come from my own model.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============================ EXPERIENCE ============================ -->
+<section class="block" id="experience">
+  <div class="wrap">
+    <p class="label reveal"><b>02</b> experience</p>
+    <h2 class="reveal">Experience</h2>
+    <ol class="timeline">
+      <li class="reveal">
+        <div class="when"><b>Jul 2026</b>Glasgow</div>
+        <div>
+          <h3>Finance Work Experience</h3>
+          <p class="org">Balfour Beatty plc</p>
+          <p>A placement I scoped directly with the Scotland Finance Director.</p>
+          <ul class="pts">
+            <li>Built a counterparty credit assessment of five prospective subcontractors. I pulled data from their published accounts, calculated liquidity, leverage and profitability ratios (acid test, cash interest cover, gearing, ROCE, operating margin, net worth), combined them with Dun &amp; Bradstreet data, and turned it all into scored comparative profiles for non-finance stakeholders. It fed into the final contractor selection.</li>
+            <li>Worked through the firm's IRR-based lease-versus-buy analysis, including staggering vehicle lease start dates to spread maintenance costs and smooth the P&amp;L.</li>
+            <li>Covered infrastructure investment modelling at Balfour Beatty Investments, and how divisional reporting consolidates to group and eventually reaches the market.</li>
+          </ul>
+          <div class="lesson-box">
+            <h4>The bit I learned the hard way</h4>
+            <p>I'd colour-coded the Dun &amp; Bradstreet ratings in my output before I understood that the code combines two separate measures, company size and credit risk, on a non-linear scale. A finance manager pointed out that my presentation made a large, riskier supplier look safer than a small, sound one.</p>
+            <p>Since then I state what a metric measures before I present it, and I only use visual emphasis where the comparison is genuinely like-for-like.</p>
+          </div>
+        </div>
+      </li>
+      <li class="reveal">
+        <div class="when"><b>Aug – Sep 2026</b>London</div>
+        <div>
+          <h3>Summer Analyst Training Course</h3>
+          <p class="org">AmplifyME</p>
+          <ul class="scores">
+            <li>Hedge fund sim R1 <b>1st</b> / 65</li>
+            <li>Hedge fund sim R2 <b>2nd</b> / 65</li>
+            <li>Sales &amp; trading <b>3rd</b> / 67</li>
+            <li>24h M&amp;A challenge <b>1st</b> / 66</li>
+            <li>Stock pitch <b>best in cohort</b></li>
+          </ul>
+          <ul class="pts">
+            <li>Placed 1st and 2nd across two hedge fund simulation rounds. In the sales and trading simulation, run as a market-making hedge fund, I came 3rd with a P&amp;L more than ten times that of 4th place.</li>
+            <li>Came 1st for my valuation model in the 24-hour M&amp;A challenge: fastest to finish, with 100% accuracy.</li>
+            <li>My Nike pitch (above) was picked as the strongest in the cohort.</li>
+          </ul>
+        </div>
+      </li>
+      <li class="reveal">
+        <div class="when"><b>Oct 2023 – present</b>Glasgow</div>
+        <div>
+          <h3>Sales Assistant, Stock Processing and Deliveries</h3>
+          <p class="org">TK Maxx</p>
+          <ul class="pts">
+            <li>Key holder running weekend deliveries: opening the store at 06:00 and getting incoming stock onto the shop floor.</li>
+            <li>Reconciled delivery paperwork with drivers, checking £50,000–£100,000 of inbound stock against manifests and documenting equipment returns.</li>
+            <li>Trained new staff and supervised charity work experience placements. Three years of continuous work alongside full-time study, exam periods included.</li>
+          </ul>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============================ EDUCATION ============================ -->
+<section class="block" id="education">
+  <div class="wrap">
+    <p class="label reveal"><b>03</b> education</p>
+    <h2 class="reveal">Education</h2>
+    <div class="edu">
+      <div class="card reveal">
+        <div class="meta"><span>Sep 2024 – Jun 2028</span><span>Glasgow</span></div>
+        <h3>University of Strathclyde</h3>
+        <p>BSc (Hons) Mathematics, Statistics and Finance</p>
+        <ul class="grades">
+          <li>Mathematical and Statistical Computing <b class="top">97%</b></li>
+          <li>Economics and Business Analysis <b>74%</b></li>
+          <li>Essential Statistics <b>73%</b></li>
+        </ul>
+        <h4 style="margin-top:22px">Year 3</h4>
+        <ul class="chips">
+          <li>Advanced Corporate Finance &amp; Financial Markets</li>
+          <li>Treasury Management &amp; Derivatives</li>
+          <li>Numerical Analysis</li>
+          <li>Applied Linear Algebra</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="meta"><span>2018 – 2024</span><span>West Lothian</span></div>
+        <h3>The James Young High School</h3>
+        <ul class="grades">
+          <li>Advanced Higher Mathematics <b>B</b></li>
+          <li>Higher Mathematics <b class="top">A</b></li>
+          <li>Highers: Business Management, English, Physics, Biology <b>B</b></li>
+          <li>National 5s <b>6 at A–B</b></li>
+        </ul>
+        <h4 style="margin-top:22px">Why I pick side projects the way I do</h4>
+        <p>I build projects ahead of the modules they relate to. The FTSE project got me ahead of a tidyverse module, and the portfolio engine is built so statistical inference, stochastic processes and numerical analysis each have something to attach to this year.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ RECORD ============================ -->
+<section class="block" id="beyond">
+  <div class="wrap">
+    <p class="label reveal"><b>04</b> beyond the degree</p>
+    <h2 class="reveal">Beyond the degree</h2>
+    <div class="beyond reveal">
+      <div class="bcard wide">
+        <span class="k">Societies</span>
+        <ul class="soc">
+          <li><b>Strathclyde Trading Society</b></li>
+          <li><b>Strathclyde Finance &amp; Accounting Society</b></li>
+        </ul>
+      </div>
+      <div class="bcard">
+        <span class="k">Volunteering</span>
+        <span class="big-n">£260</span>
+        <p>Raised on the Alzheimer's Society 26.2-mile hike.</p>
+      </div>
+      <div class="bcard">
+        <span class="k">Volunteering</span>
+        <span class="big-n">£500+</span>
+        <p>Raised playing in the Team Jak charity football match.</p>
+      </div>
+      <div class="bcard">
+        <span class="k">Edinburgh Marathon · May 2026</span>
+        <span class="big-n">42.2 km</span>
+        <p>Trained for alongside full-time study, through semester and exams.</p>
+      </div>
+      <div class="bcard">
+        <span class="k">Chess</span>
+        <span class="big-n">1600</span>
+        <p>Taught by my dad and still play regularly. I beat a 1600-rated engine, eventually, after a lot of attempts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="record">
+  <div class="wrap">
+    <p class="label reveal"><b>05</b> record</p>
+    <h2 class="reveal">Awards &amp; certifications</h2>
+    <p class="prose reveal">Hover over a card or tap it to see the full certificate. Scroll the strip sideways or use the arrows.</p>
+
+    <div class="showcase reveal">
+      <div class="viewer">
+        <figure class="cert is-on" data-cert="cfa">
+          <img src="assets/cfa-finalist.jpg" alt="AmplifyME and CFA Institute certificate of completion and global finalist, Investing Simulator Challenge, awarded to Conor Linkston, December 2025" width="764" height="540">
+        </figure>
+        <figure class="cert" data-cert="cfa-completion">
+          <img src="assets/cert-cfa-completion.jpg" alt="AmplifyME and CFA Institute certificate of completion, Investing Simulator Challenge, awarded to Conor Linkston, November 2025" width="1176" height="816">
+        </figure>
+        <figure class="cert" data-cert="libf">
+          <img class="portrait" src="assets/cert-libf.jpg" alt="AmplifyME certificate: Conor Linkston has achieved the grade Distinction, Level 6 Diploma in Applied Finance, September 2026, LIBF accredited learning programme" width="1132" height="1600">
+        </figure>
+        <figure class="cert" data-cert="forage">
+          <img src="assets/cert-forage.jpg" alt="Goldman Sachs Operations Job Simulation certificate of completion via Forage, awarded to Conor Linkston, 3 September 2026" width="1600" height="1130">
+        </figure>
+        <figure class="cert" data-cert="powerbi">
+          <img src="assets/cert-powerbi.jpg" alt="Financial Edge playlist certificate, Getting Started with Power BI, awarded to Conor Linkston, 3 September 2026" width="1600" height="1131">
+        </figure>
+      </div>
+
+      <div class="detail" aria-live="polite">
+        <p class="count-line mono"><b id="cert-n">01</b> / <span id="cert-total">04</span></p>
+        <p class="issuer mono" id="cert-issuer"></p>
+        <h3 id="cert-title"></h3>
+        <p id="cert-desc"></p>
+        <p class="when mono" id="cert-date"></p>
+        <div class="nav-btns">
+          <button type="button" class="arrow" data-step="-1" aria-label="Previous certificate">←</button>
+          <button type="button" class="arrow" data-step="1" aria-label="Next certificate">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail-wrap reveal">
+      <ul class="rail" aria-label="Certificates">
+        <li><button type="button" class="card-btn" data-show="cfa" aria-current="true"
+            data-issuer="CFA Institute × AmplifyME" data-date="December 2025"
+            data-title="Global Finalist, Investing Simulator Challenge"
+            data-desc="Top 10% globally out of thousands of entrants in an asset management simulation run by CFA Institute and AmplifyME.">
+          <span class="thumb"><img src="assets/cfa-finalist.jpg" alt="" width="764" height="540" loading="lazy"></span>
+          <span class="ct">Global Finalist</span><span class="cm">CFA Institute · Dec 2025</span>
+        </button></li>
+        <li><button type="button" class="card-btn" data-show="cfa-completion"
+            data-issuer="CFA Institute × AmplifyME" data-date="November 2025"
+            data-title="Investing Simulator Challenge, Certificate of Completion"
+            data-desc="Awarded for taking part in the CFA Institute Investing Simulator Challenge. A month later I was selected as a global finalist.">
+          <span class="thumb"><img src="assets/cert-cfa-completion.jpg" alt="" width="1176" height="816" loading="lazy"></span>
+          <span class="ct">Investing Simulator Challenge</span><span class="cm">CFA Institute · Nov 2025</span>
+        </button></li>
+        <li><button type="button" class="card-btn" data-show="libf"
+            data-issuer="AmplifyME × LIBF" data-date="September 2026"
+            data-title="Level 6 Diploma in Applied Finance, with Distinction"
+            data-desc="Awarded through the AmplifyME Summer Analyst programme and accredited by the London Institute of Banking &amp; Finance.">
+          <span class="thumb"><img class="portrait" src="assets/cert-libf.jpg" alt="" width="1132" height="1600" loading="lazy"></span>
+          <span class="ct">Level 6 Diploma · Distinction</span><span class="cm">LIBF · Sep 2026</span>
+        </button></li>
+        <li><button type="button" class="card-btn" data-show="forage"
+            data-issuer="Goldman Sachs × Forage" data-date="September 2026"
+            data-title="Operations Job Simulation"
+            data-desc="Practical tasks on the foundations of operations and on facilitating ultra-high-net-worth transactions.">
+          <span class="thumb"><img src="assets/cert-forage.jpg" alt="" width="1600" height="1130" loading="lazy"></span>
+          <span class="ct">Operations Job Simulation</span><span class="cm">Goldman Sachs · Sep 2026</span>
+        </button></li>
+        <li><button type="button" class="card-btn" data-show="powerbi"
+            data-issuer="Financial Edge" data-date="September 2026"
+            data-title="Getting Started with Power BI"
+            data-desc="Financial Edge training playlist introducing Power BI for reporting and dashboards.">
+          <span class="thumb"><img src="assets/cert-powerbi.jpg" alt="" width="1600" height="1131" loading="lazy"></span>
+          <span class="ct">Getting Started with Power BI</span><span class="cm">Financial Edge · Sep 2026</span>
+        </button></li>
+      </ul>
+    </div>
+
+    <div class="skills reveal">
+      <h4>Toolkit</h4>
+      <dl>
+        <dt>Languages</dt><dd>Python (pandas, NumPy, SciPy, pytest) · R (tidyverse, tidyquant) · SQL · MATLAB</dd>
+        <dt>Finance</dt><dd>Ratio &amp; credit analysis · DCF / multiples · IRR lease-vs-buy · portfolio construction · backtesting</dd>
+        <dt>Tools</dt><dd>Excel (Power Query) · Power BI · Git / GitHub · AI-assisted workflows</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CONTACT ============================ -->
+<section class="block" id="notes">
+  <div class="wrap">
+    <p class="label reveal"><b>06</b> notes</p>
+    <h2 class="reveal">Notes</h2>
+    <p class="prose reveal">Write-ups I did after simulations, mostly about what went wrong. Writing it down is how I make sure I don't repeat it.</p>
+    <div class="notes reveal">
+      <a class="note" href="notes/cme-trading-day-1.html">
+        <span class="meta"><span>CME Trading Challenge</span><span>Aug 2026</span><span>5 min read</span></span>
+        <h3>The P&amp;L is the least interesting thing that happened</h3>
+        <p>I sized every trade for a $100k account. It was $1m. Then I found my own stop orders would have flipped me long in a market I was bearish on. Eight things I learned on day one.</p>
+        <span class="more mono">Read →</span>
+      </a>
+      <a class="note" href="notes/asset-management-sim.html">
+        <span class="meta"><span>AmplifyME asset management sim</span><span>Aug 2026</span><span>3 min read</span></span>
+        <h3>9th of 71, and the one score that let me down</h3>
+        <p>Above 90% on risk appetite, returns and risk management, and 46% on rebalancing. The low score came from a process problem, not a judgement one, which makes it fixable.</p>
+        <span class="more mono">Read →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="block contact" id="contact">
+  <div class="wrap">
+    <p class="label reveal"><b>07</b> contact</p>
+    <div class="contact-grid">
+      <figure class="portrait-card reveal">
+        <img src="assets/conor.jpg" alt="Conor Linkston in a dark suit on a rooftop terrace in London at sunset" width="640" height="800" loading="lazy">
+        <figcaption class="mono">London · September 2026</figcaption>
+      </figure>
+      <div>
+        <h2 class="reveal">Get in touch</h2>
+        <p class="prose reveal">I'm looking for 2027 summer internships in finance. If something here is relevant to what your team does, I'd be glad to talk it through.</p>
+        <p class="reveal" style="margin-top:28px"><a class="big-link" href="mailto:conorlinkston@icloud.com">conorlinkston@icloud.com</a></p>
+        <div class="links reveal" style="margin-top:28px">
+          <a class="btn primary" href="assets/Conor_Linkston_CV.pdf" download>Download CV (PDF) ↓</a>
+          <a class="btn" href="https://www.linkedin.com/in/conorlinkston" rel="noopener">linkedin.com/in/conorlinkston</a>
+          <a class="btn" href="https://github.com/conor8568" rel="noopener">github.com/conor8568</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Conor Linkston · West Lothian, Scotland</span>
+    <span>Hand-built. Charts drawn from my own project outputs.</span>
+  </div>
+</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>
