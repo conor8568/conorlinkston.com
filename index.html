@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/style.css?v=8">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -87,7 +87,7 @@
     <p class="role"><span class="decode-line" data-text="Mathematics, Statistics & Finance · University of Strathclyde">Mathematics, Statistics &amp; Finance · University of Strathclyde</span></p>
     <p class="lede">I build models to test ideas in finance, and I <em>report what they find</em>, not what I hoped they would.</p>
     <div class="links">
-      <a class="btn primary" href="#work">See the work ↓</a>
+      <a class="btn primary" href="#work">See the work <span class="down" aria-hidden="true">↓</span></a>
       <a class="btn dl" href="assets/Conor_Linkston_CV.pdf" download="Conor_Linkston_CV.pdf"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0-3.2-3.2M8 10l3.2-3.2M3 13h10"/></svg>Download CV <span class="sub">PDF</span></a>
       <a class="btn" href="https://www.linkedin.com/in/conorlinkston" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       <a class="btn" href="https://github.com/conor8568" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -189,16 +189,16 @@
         </p>
 
         <div class="table-wrap">
-          <table>
+          <table class="rtable">
             <caption>Out of sample, net of costs · reproduce with <code>python3 scripts/run_backtest.py</code></caption>
             <thead><tr><th scope="col">strategy</th><th scope="col">ann. return</th><th scope="col">ann. vol</th><th scope="col">Sharpe</th><th scope="col">max DD</th><th scope="col">turnover</th></tr></thead>
             <tbody>
-              <tr class="bench"><td>Equal weight (1/N)</td><td>7.86%</td><td>13.10%</td><td>0.643</td><td>−36.7%</td><td class="win">2.4%</td></tr>
-              <tr><td>Markowitz (λ=3)</td><td>7.44%</td><td>18.36%</td><td>0.483</td><td>−31.7%</td><td>349%</td></tr>
-              <tr><td>Markowitz + Ledoit-Wolf</td><td>7.44%</td><td>18.36%</td><td>0.483</td><td>−31.6%</td><td>348%</td></tr>
-              <tr class="hl"><td>Markowitz + resampling</td><td class="win">8.28%</td><td>14.07%</td><td>0.636</td><td>−29.5%</td><td>220%</td></tr>
-              <tr><td>Minimum variance</td><td>3.67%</td><td class="win">5.35%</td><td class="win">0.700</td><td class="win">−19.7%</td><td>30.4%</td></tr>
-              <tr><td>Minimum variance + LW</td><td>3.59%</td><td>5.32%</td><td>0.689</td><td>−19.8%</td><td>29.9%</td></tr>
+              <tr class="bench"><td>Equal weight (1/N)</td><td data-label="ann. return">7.86%</td><td data-label="ann. vol">13.10%</td><td data-label="Sharpe">0.643</td><td data-label="max DD">−36.7%</td><td data-label="turnover" class="win">2.4%</td></tr>
+              <tr><td>Markowitz (λ=3)</td><td data-label="ann. return">7.44%</td><td data-label="ann. vol">18.36%</td><td data-label="Sharpe">0.483</td><td data-label="max DD">−31.7%</td><td data-label="turnover">349%</td></tr>
+              <tr><td>Markowitz + Ledoit-Wolf</td><td data-label="ann. return">7.44%</td><td data-label="ann. vol">18.36%</td><td data-label="Sharpe">0.483</td><td data-label="max DD">−31.6%</td><td data-label="turnover">348%</td></tr>
+              <tr class="hl"><td>Markowitz + resampling</td><td data-label="ann. return" class="win">8.28%</td><td data-label="ann. vol">14.07%</td><td data-label="Sharpe">0.636</td><td data-label="max DD">−29.5%</td><td data-label="turnover">220%</td></tr>
+              <tr><td>Minimum variance</td><td data-label="ann. return">3.67%</td><td data-label="ann. vol" class="win">5.35%</td><td data-label="Sharpe" class="win">0.700</td><td data-label="max DD" class="win">−19.7%</td><td data-label="turnover">30.4%</td></tr>
+              <tr><td>Minimum variance + LW</td><td data-label="ann. return">3.59%</td><td data-label="ann. vol">5.32%</td><td data-label="Sharpe">0.689</td><td data-label="max DD">−19.8%</td><td data-label="turnover">29.9%</td></tr>
             </tbody>
           </table>
         </div>
@@ -361,7 +361,7 @@
           <span>AmplifyME Summer Analyst Programme</span>
         </div>
         <h3 class="title" id="p3">Nike: just buy it</h3>
-        <p class="win"><span class="trophy" aria-hidden="true">★</span>Best stock pitch in the cohort<span class="win-sub">breakout team placed 2nd</span></p>
+        <p class="award-line"><span class="trophy" aria-hidden="true">★</span>Best stock pitch in the cohort<span class="win-sub">subsequent breakout team placed second</span></p>
         <p class="prose">
           A contrarian stock pitch. I presented it to the full group and defended it under questioning,
           then led a breakout team that developed it further.
@@ -416,7 +416,7 @@
           <span>Sep 2026</span>
         </div>
         <h3 class="title" id="p4">Disney: worth more in pieces?</h3>
-        <p class="win"><span class="trophy" aria-hidden="true">★</span>1st of 66<span class="win-sub">fastest to finish · 100% accuracy</span></p>
+        <p class="award-line"><span class="trophy" aria-hidden="true">★</span>1st of 66<span class="win-sub">fastest to finish · 100% accuracy</span></p>
         <p class="prose">
           AmplifyME's 24-hour M&amp;A challenge. The brief was a full valuation of Disney, a test of whether a three-way
           break-up unlocks value, and a look at buying Electronic Arts.
@@ -696,8 +696,8 @@
   </div>
 </footer>
 
-<script src="assets/data.js"></script>
-<script src="assets/charts.js"></script>
-<script src="assets/site.js"></script>
+<script src="assets/data.js?v=6"></script>
+<script src="assets/charts.js?v=6"></script>
+<script src="assets/site.js?v=6"></script>
 </body>
 </html>
