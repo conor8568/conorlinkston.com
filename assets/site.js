@@ -156,51 +156,82 @@
     requestAnimationFrame(tick);
   });
 
-  /* ---------- scroll effects ---------- */
+  /* ---------- scroll entrances: one distinct, restrained effect per section ---------- */
+  const ANIMS = [
+    [".label", "line"],
+    [".principles", "stagger"],
+    [".project", "scan"],
+    ["#experience .timeline", "timeline"],
+    [".beyond", "pop"],
+    [".showcase", "fade"],
+    [".rail", "slide"],
+    [".portrait-card", "focus"],
+  ];
   if (!still && "IntersectionObserver" in window) {
-    // cards render in behind a scan line
-    const cards = document.querySelectorAll(".principles > div, .project, .chart-card, .bcard, .note, .edu .card, .timeline > li, .showcase, .caveat, .lessons li, .table-wrap, .stats");
-    cards.forEach((c) => c.classList.add("q-card", "q-wait"));
-    const cardIO = new IntersectionObserver((es) => es.forEach((e) => {
+    document.documentElement.classList.add("motion");
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
       if (!e.isIntersecting) return;
-      cardIO.unobserve(e.target);
-      e.target.classList.remove("q-wait");
-      e.target.classList.add("q-in");
-      e.target.addEventListener("animationend", (ev) => { if (ev.animationName === "q-render") e.target.classList.remove("q-in"); });
-    }), { rootMargin: "0px 0px -8% 0px" });
-    cards.forEach((c) => cardIO.observe(c));
+      io.unobserve(e.target);
+      e.target.classList.add("in");
+      if (e.target.dataset.anim === "scan")
+        e.target.addEventListener("animationend", () => e.target.classList.add("done"), { once: true });
+    }), { rootMargin: "0px 0px -12% 0px" });
+    ANIMS.forEach(([sel, kind]) => document.querySelectorAll(sel).forEach((el) => {
+      el.dataset.anim = kind;
+      [...el.children].forEach((c, k) => c.style.setProperty("--k", k));
+      io.observe(el);
+    }));
 
-    // numbers scramble through digits before settling
-    const scramble = (el) => {
-      const final = el.textContent, t0 = performance.now(), dur = 650;
+    // education grades count up from zero
+    const gradeIO = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      gradeIO.unobserve(e.target);
+      const el = e.target, final = el.textContent, m = final.match(/^(\d+)(.*)$/);
+      if (!m) return;
+      const to = +m[1], suf = m[2], t0 = performance.now() + 150, dur = 900;
       const tick = (now) => {
-        const p = (now - t0) / dur;
-        if (p >= 1) { el.textContent = final; return; }
-        const lock = Math.floor(p * final.length);
-        el.textContent = [...final].map((c, i) => (i < lock || !/[0-9]/.test(c) ? c : rnd("0123456789"))).join("");
-        requestAnimationFrame(tick);
+        const p = Math.min(1, Math.max(0, (now - t0) / dur));
+        el.textContent = Math.round(to * (1 - (1 - p) ** 3)) + suf;
+        if (p < 1) requestAnimationFrame(tick); else el.textContent = final;
       };
+      el.textContent = "0" + suf;
       requestAnimationFrame(tick);
-    };
-    const nums = [...document.querySelectorAll(".stat .v, .bcard .big-n, .grades b, .scores b, .ledger .d")].filter((n) => !n.children.length);
-    const numIO = new IntersectionObserver((es) => es.forEach((e) => {
-      if (!e.isIntersecting) return;
-      numIO.unobserve(e.target); scramble(e.target);
     }), { rootMargin: "0px 0px -10% 0px" });
-    nums.forEach((n) => numIO.observe(n));
-
-    // section headings decode as they arrive
-    const heads = [...document.querySelectorAll("section.block h2")].filter((h) => !h.children.length);
-    const headIO = new IntersectionObserver((es) => es.forEach((e) => {
-      if (!e.isIntersecting) return;
-      headIO.unobserve(e.target);
-      const h = e.target, text = h.textContent;
-      h.setAttribute("aria-label", text);
-      h.classList.add("q-h", "q-busy");
-      decode(h, { text, stagger: 22, spin: 220, onDone: () => { h.classList.remove("q-busy"); h.removeAttribute("aria-label"); } });
-    }), { rootMargin: "0px 0px -15% 0px" });
-    heads.forEach((h) => headIO.observe(h));
+    document.querySelectorAll(".grades b").forEach((b) => gradeIO.observe(b));
   }
+
+  /* ---------- smooth scrolling for in-page links (See the work, header nav) ---------- */
+  const header = document.querySelector(".bar");
+  let scrollRaf = 0;
+  const glide = (targetY) => {
+    cancelAnimationFrame(scrollRaf);
+    const startY = scrollY, dist = targetY - startY;
+    if (still || Math.abs(dist) < 2) { scrollTo(0, targetY); return; }
+    const dur = Math.min(1400, 500 + Math.abs(dist) * 0.25), t0 = performance.now();
+    const ease = (p) => (p < 0.5 ? 4 * p * p * p : 1 - (-2 * p + 2) ** 3 / 2);
+    const tick = (now) => {
+      const p = Math.min(1, (now - t0) / dur);
+      scrollTo(0, startY + dist * ease(p));
+      if (p < 1) scrollRaf = requestAnimationFrame(tick);
+    };
+    scrollRaf = requestAnimationFrame(tick);
+    // a wheel or touch from the user takes over straight away
+    const stop = () => { cancelAnimationFrame(scrollRaf); removeEventListener("wheel", stop); removeEventListener("touchstart", stop); };
+    addEventListener("wheel", stop, { passive: true, once: true });
+    addEventListener("touchstart", stop, { passive: true, once: true });
+  };
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    const id = a.getAttribute("href").slice(1);
+    const target = id ? document.getElementById(id) : document.documentElement;
+    if (!target) return;
+    e.preventDefault();
+    const y = id ? target.getBoundingClientRect().top + scrollY - (header?.offsetHeight || 0) - 12 : 0;
+    glide(Math.max(0, y));
+    history.pushState(null, "", id ? "#" + id : location.pathname);
+    if (id === "main") target.focus({ preventScroll: true });
+  });
 
   /* ---------- certificate showcase + rail ---------- */
   const certCards = [...document.querySelectorAll(".rail .card-btn")];
@@ -264,7 +295,11 @@
     es.forEach((e) => {
       if (!e.isIntersecting) return;
       links.forEach((a) => a.removeAttribute("aria-current"));
-      map.get(e.target.id)?.setAttribute("aria-current", "true");
+      const a = map.get(e.target.id);
+      if (!a) return;
+      a.setAttribute("aria-current", "true");
+      const nav = a.parentElement;
+      if (nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: a.offsetLeft - 8, behavior: still ? "auto" : "smooth" });
     });
   }, { rootMargin: "-45% 0px -50% 0px" });
   map.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
