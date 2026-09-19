@@ -318,6 +318,119 @@
       b.addEventListener("click", () => select(current + +b.dataset.step, { scroll: true })));
   }
 
+  /* ---------- "01 work" dropdown: a small terminal that types out the projects ---------- */
+  const workLink = [...document.querySelectorAll(".bar nav a")].find((a) => /#work$/.test(a.getAttribute("href")));
+  const bar = document.querySelector(".bar");
+  const canHover = matchMedia("(hover: hover) and (pointer: fine)");
+  if (workLink && bar) {
+    const PROJECTS = [
+      { perm: "drwxr-xr-x", slug: "robust-portfolio", name: "robust-portfolio/", desc: "Python · Phase 1 done" },
+      { perm: "drwxr-xr-x", slug: "ftse-portfolio", name: "ftse-portfolio/", desc: "R + SQL · in progress", now: true },
+      { perm: "-rw-r--r--", slug: "nike-stock-pitch", name: "nike-stock-pitch.pdf", desc: "★ best pitch in cohort" },
+      { perm: "-rw-r--r--", slug: "disney-ma", name: "disney-ma.xlsx", desc: "★ 1st of 66" },
+    ];
+    const here = location.pathname.replace(/\/$/, "").split("/").pop();
+    const dd = document.createElement("div");
+    dd.className = "work-dd";
+    dd.id = "work-dd";
+    dd.hidden = true;
+    dd.innerHTML = `
+      <div class="dd-bar" aria-hidden="true"><i></i><i></i><i></i><span>zsh — ~/work</span></div>
+      <div class="dd-body">
+        <p class="dd-cmd" aria-hidden="true"><span class="p">$ </span><span class="t"></span></p>
+        <p class="dd-total" aria-hidden="true"></p>
+        <ul>${PROJECTS.map((p) => `
+          <li><a href="/${p.slug}/" class="dd-row${p.slug === here ? " here" : ""}${p.now ? " now" : ""}" aria-label="${p.name.replace(/[/.].*$/, "").replace(/-/g, " ")}: ${p.desc.replace("★ ", "")}">
+            <span class="perm" aria-hidden="true"></span><span class="name" aria-hidden="true"></span><span class="desc" aria-hidden="true"></span>
+          </a></li>`).join("")}
+        </ul>
+        <p class="dd-foot" aria-hidden="true"><span class="p">$ </span><span class="cur"></span></p>
+      </div>`;
+    bar.appendChild(dd);
+    workLink.setAttribute("aria-haspopup", "true");
+    workLink.setAttribute("aria-expanded", "false");
+    workLink.setAttribute("aria-controls", "work-dd");
+
+    const rows = [...dd.querySelectorAll(".dd-row")];
+    const cmd = dd.querySelector(".dd-cmd .t"), total = dd.querySelector(".dd-total");
+    let typing = 0, closeTimer = 0;
+
+    const fillAll = () => {
+      typing++;
+      cmd.textContent = "ls -l ~/work"; total.textContent = `total ${PROJECTS.length}`;
+      rows.forEach((r, i) => {
+        r.querySelector(".perm").textContent = PROJECTS[i].perm;
+        r.querySelector(".name").textContent = PROJECTS[i].name;
+        r.querySelector(".desc").textContent = PROJECTS[i].desc;
+        r.classList.add("shown");
+      });
+    };
+
+    // types each field in turn; opening again cancels the previous run
+    const typeOut = async () => {
+      const run = ++typing;
+      const alive = () => run === typing && !dd.hidden;
+      const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+      const type = async (el, text, speed) => {
+        for (let i = 1; i <= text.length; i++) { if (!alive()) return false; el.textContent = text.slice(0, i); await wait(speed); }
+        return true;
+      };
+      cmd.textContent = ""; total.textContent = "";
+      rows.forEach((r) => { r.classList.remove("shown"); r.querySelectorAll("span").forEach((s) => (s.textContent = "")); });
+      if (!(await type(cmd, "ls -l ~/work", 22))) return;
+      await wait(90);
+      if (!alive()) return;
+      total.textContent = `total ${PROJECTS.length}`;
+      for (let i = 0; i < rows.length; i++) {
+        const r = rows[i], p = PROJECTS[i];
+        r.classList.add("shown");
+        r.querySelector(".perm").textContent = p.perm;
+        if (!(await type(r.querySelector(".name"), p.name, 9))) return;
+        if (!(await type(r.querySelector(".desc"), p.desc, 6))) return;
+      }
+    };
+
+    const place = () => {
+      const b = bar.getBoundingClientRect(), a = workLink.getBoundingClientRect();
+      const w = dd.offsetWidth || 560;
+      dd.style.left = Math.max(12, Math.min(a.left - b.left - 18, b.width - w - 12)) + "px";
+    };
+    const open = () => {
+      if (!canHover.matches || innerWidth <= 760) return;
+      clearTimeout(closeTimer);
+      if (!dd.hidden) return;
+      dd.hidden = false; place();
+      requestAnimationFrame(() => dd.classList.add("open"));
+      workLink.setAttribute("aria-expanded", "true");
+      if (still) fillAll(); else typeOut();
+    };
+    const close = (now) => {
+      clearTimeout(closeTimer);
+      const shut = () => {
+        dd.classList.remove("open"); workLink.setAttribute("aria-expanded", "false"); typing++;
+        setTimeout(() => { if (!dd.classList.contains("open")) dd.hidden = true; }, 160);
+      };
+      now ? shut() : (closeTimer = setTimeout(shut, 220));
+    };
+
+    [workLink, dd].forEach((el) => {
+      el.addEventListener("mouseenter", open);
+      el.addEventListener("mouseleave", () => close());
+    });
+    workLink.addEventListener("focus", open);
+    workLink.addEventListener("blur", (e) => { if (!dd.contains(e.relatedTarget)) close(); });
+    dd.addEventListener("focusout", (e) => { if (!dd.contains(e.relatedTarget) && e.relatedTarget !== workLink) close(true); });
+    workLink.addEventListener("keydown", (e) => { if (e.key === "ArrowDown" && !dd.hidden) { e.preventDefault(); fillAll(); rows[0].focus(); } });
+    dd.addEventListener("keydown", (e) => {
+      const i = rows.indexOf(document.activeElement);
+      if (e.key === "Escape") { close(true); workLink.focus(); }
+      else if (e.key === "ArrowDown" && i > -1) { e.preventDefault(); rows[(i + 1) % rows.length].focus(); }
+      else if (e.key === "ArrowUp" && i > -1) { e.preventDefault(); i === 0 ? workLink.focus() : rows[i - 1].focus(); }
+    });
+    addEventListener("resize", () => { if (!dd.hidden) place(); });
+    addEventListener("scroll", () => { if (!dd.hidden && !dd.matches(":hover") && !dd.contains(document.activeElement)) close(true); }, { passive: true });
+  }
+
   /* ---------- highlight the section currently in view ---------- */
   const links = [...document.querySelectorAll(".bar nav a")];
   const map = new Map(links.map((a) => [a.getAttribute("href").slice(1), a]));
