@@ -18,7 +18,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=11">
+  <link rel="stylesheet" href="assets/style.css?v=13">
+  <script data-goatcounter="https://conorlinkston.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -137,10 +138,10 @@
   <div class="wrap">
     <p class="label reveal"><b>01</b> work</p>
     <h2 class="reveal">Selected work</h2>
-    <p class="prose reveal">Two code projects, an equity pitch and an M&amp;A case. The charts are built from my own outputs, so hover over them for the numbers.</p>
+    <p class="prose reveal">Two code projects, an equity pitch and an M&amp;A case. Each has a full breakdown with the charts, method and what I got wrong.</p>
 
     <!-- ---------- PROJECT 1 ---------- -->
-    <article class="project reveal" aria-labelledby="p1">
+    <article class="project project-summary reveal" aria-labelledby="p1">
       <div class="project-head">
         <div class="meta">
           <span class="tag">Python · pandas · NumPy · SciPy · pytest</span>
@@ -157,6 +158,13 @@
       </div>
 
       <div class="project-body">
+        <p class="callout">Markowitz loses to equal weight, and not narrowly.</p>
+        <div class="stats">
+          <div class="stat"><div class="k">Equal weight (1/N)</div><div class="v up">0.643</div><div class="s">Sharpe · 2.4% turnover</div></div>
+          <div class="stat"><div class="k">Markowitz</div><div class="v">0.483</div><div class="s">Sharpe · 349% turnover</div></div>
+          <div class="stat"><div class="k">+ Resampling</div><div class="v">0.636</div><div class="s">Sharpe · best return, 8.28%</div></div>
+          <div class="stat"><div class="k">Tests</div><div class="v">49</div><div class="s">passing · lookahead tested</div></div>
+        </div>
         <div class="roadmap-wrap">
           <h4>Roadmap</h4>
           <ol class="roadmap" aria-label="Robust portfolio roadmap">
@@ -168,109 +176,16 @@
           <li class="next"><span class="dot" aria-hidden="true"></span><span class="ph">Phase 5+</span><b>Explainability and a conversational agent</b><span class="st">Planned</span></li>
           </ol>
         </div>
-        <dl class="spec">
-          <div><dt>Universe</dt><dd>7 ETFs · equity, bonds, gold, property</dd></div>
-          <div><dt>Period</dt><dd>2005–2026 · 5,430 days</dd></div>
-          <div><dt>Lookback</dt><dd>252 days</dd></div>
-          <div><dt>Rebalance</dt><dd>monthly</dd></div>
-          <div><dt>Costs</dt><dd>10 bps turnover</dd></div>
-          <div><dt>Evaluation</dt><dd>walk-forward, out of sample</dd></div>
-        </dl>
-
-        <ol class="pipeline" aria-label="How the pipeline fits together">
-          <li><b>Price data</b><span>data/</span></li>
-          <li><b>Estimate inputs</b><span>estimation/</span></li>
-          <li><b>Choose weights</b><span>optimisation/</span></li>
-          <li><b>Backtest honestly</b><span>backtest/</span></li>
-          <li><b>Compare to benchmark</b><span>benchmarks/</span></li>
-          <li class="later"><b>AI market views</b><span>phase 3</span></li>
-        </ol>
-
-        <p class="callout">
-          Markowitz loses to equal weight, and not narrowly.
-          <small>It earns less while taking more risk: 18.4% volatility against 13.1%. That's the opposite of what a method built to optimise risk is supposed to do. It also traded 349% a year to get there.</small>
-        </p>
-
-        <div class="table-wrap">
-          <table class="rtable">
-            <caption>Out of sample, net of costs · reproduce with <code>python3 scripts/run_backtest.py</code></caption>
-            <thead><tr><th scope="col">strategy</th><th scope="col">ann. return</th><th scope="col">ann. vol</th><th scope="col">Sharpe</th><th scope="col">max DD</th><th scope="col">turnover</th></tr></thead>
-            <tbody>
-              <tr class="bench"><td>Equal weight (1/N)</td><td data-label="ann. return">7.86%</td><td data-label="ann. vol">13.10%</td><td data-label="Sharpe">0.643</td><td data-label="max DD">−36.7%</td><td data-label="turnover" class="win">2.4%</td></tr>
-              <tr><td>Markowitz (λ=3)</td><td data-label="ann. return">7.44%</td><td data-label="ann. vol">18.36%</td><td data-label="Sharpe">0.483</td><td data-label="max DD">−31.7%</td><td data-label="turnover">349%</td></tr>
-              <tr><td>Markowitz + Ledoit-Wolf</td><td data-label="ann. return">7.44%</td><td data-label="ann. vol">18.36%</td><td data-label="Sharpe">0.483</td><td data-label="max DD">−31.6%</td><td data-label="turnover">348%</td></tr>
-              <tr class="hl"><td>Markowitz + resampling</td><td data-label="ann. return" class="win">8.28%</td><td data-label="ann. vol">14.07%</td><td data-label="Sharpe">0.636</td><td data-label="max DD">−29.5%</td><td data-label="turnover">220%</td></tr>
-              <tr><td>Minimum variance</td><td data-label="ann. return">3.67%</td><td data-label="ann. vol" class="win">5.35%</td><td data-label="Sharpe" class="win">0.700</td><td data-label="max DD" class="win">−19.7%</td><td data-label="turnover">30.4%</td></tr>
-              <tr><td>Minimum variance + LW</td><td data-label="ann. return">3.59%</td><td data-label="ann. vol">5.32%</td><td data-label="Sharpe">0.689</td><td data-label="max DD">−19.8%</td><td data-label="turnover">29.9%</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="two">
-          <div>
-            <h4>Why it loses</h4>
-            <ol class="diag">
-              <li data-n="01"><b>It isn't diversifying.</b><p>It holds 1.6 of 7 assets on average, with 85% in the biggest one. Every month it picks a favourite, piles in, and changes its mind the next month. That's not a portfolio, it's a sequence of bets.</p></li>
-              <li data-n="02"><b>Costs aren't the cause.</b><p>With costs switched off it still loses (0.502 vs 0.643). The decisions are bad, not just expensive.</p></li>
-              <li data-n="03"><b>The expected returns carry no signal.</b><p>In a typical window, not even the best-looking asset has a mean return distinguishable from zero (median largest |t| = 1.79, against 1.96). The covariance matrix is fine. The problem is μ.</p></li>
-            </ol>
-          </div>
-          <figure class="chart-card">
-            <figcaption><span class="ct">Which fix works</span><span class="cs">assets held above 1% weight, of 7</span></figcaption>
-            <div style="position:relative"><ul class="hbars" id="concentration" style="--lab:170px;--lab-sm:130px"></ul></div>
-            <p class="prose" style="font-size:14.5px;margin:14px 0 0">
-              Shrinkage is a correct implementation of a tool aimed at a problem this project doesn't have. It chose a median intensity of 0.055 and changed nothing.
-              Resampling goes after μ, and the optimiser goes from making one bet to holding a real portfolio.
-            </p>
-          </figure>
-        </div>
-
-        <div class="two">
-          <figure class="chart-card">
-            <figcaption><span class="ct">The risk-aversion sweep</span><span class="cs">Markowitz Sharpe by λ</span></figcaption>
-            <div class="chart" id="sweep"></div>
-          </figure>
-          <div>
-            <h4>Not reporting the best row</h4>
-            <p class="prose">
-              λ is the one number in the strategy I <strong>choose</strong> rather than estimate, so it's the easiest place to
-              fit the model to its own test set. I fixed λ=3 from the literature before running anything, then published the whole curve instead of the best result.
-            </p>
-            <p class="prose">
-              Performance improves the more the optimiser ignores its own return forecasts, steadily from λ=1 to λ=50.
-              One lucky value would be suspicious. A trend across a 50-fold range is a property of the data, and it points to the same conclusion as the diagnostics.
-            </p>
-          </div>
-        </div>
-
-        <div>
-          <h4>What I got wrong along the way</h4>
-          <ul class="lessons">
-            <li><b>The off-by-one</b>One character, <code>:t</code> against <code>:t+1</code>, separates a valid backtest from a fantasy. Nothing in the output would look wrong.</li>
-            <li><b>Forward-fill vs backfill</b><code>ffill()</code> and <code>bfill()</code> are one character apart, and one of them is lookahead bias with no visible symptom. There's now a test for it.</li>
-            <li><b>A test that couldn't fail</b>My first engine test passed because the rule meant to churn the portfolio never churned. Next time the test gets written before the engine.</li>
-          </ul>
-          <blockquote class="pull" style="margin-top:24px">
-            The dangerous errors here aren't the ones that crash. They're the ones that produce a plausible number.
-            <cite>findings.md, §12</cite>
-          </blockquote>
-        </div>
-
-        <div class="caveat">
-          <h4>Caveats, stated up front</h4>
-          <p>Resampling still doesn't beat 1/N. 0.636 against 0.643 is a tie at best, and 1/N gets there trading 2.4% a year instead of 220%. Minimum variance tops the Sharpe column by hiding 88% in bonds during an exceptional run for bonds. I've written my prediction for Phase 3 down in advance: it helps, but by less than resampling did.</p>
-        </div>
       </div>
 
       <div class="project-foot">
+        <a class="btn primary" href="/robust-portfolio/">Full breakdown <span class="down" aria-hidden="true">→</span></a>
         <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation" target="_blank" rel="noopener noreferrer">Repository</a>
-        <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation/blob/main/docs/findings.md" target="_blank" rel="noopener noreferrer">Research log</a>
-        <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation/blob/main/docs/ai-methodology.md" target="_blank" rel="noopener noreferrer">How I used AI</a>
       </div>
     </article>
 
     <!-- ---------- PROJECT 2 ---------- -->
-    <article class="project reveal" aria-labelledby="p2">
+    <article class="project project-summary reveal" aria-labelledby="p2">
       <div class="project-head">
         <div class="meta">
           <span class="tag">R · tidyverse · tidyquant · quadprog · SQL</span>
@@ -293,7 +208,6 @@
           <div class="stat"><div class="k">FTSE 100</div><div class="v">1.95%</div><div class="s">ann. return · 12.22% vol</div></div>
           <div class="stat"><div class="k">Sharpe (rf = 0)</div><div class="v">0.53</div><div class="s">vs 0.16 index · 0.16 EW</div></div>
         </div>
-
         <div class="roadmap-wrap">
           <h4>Roadmap</h4>
           <ol class="roadmap" aria-label="FTSE project roadmap">
@@ -305,58 +219,16 @@
           <li class="next"><span class="dot" aria-hidden="true"></span><span class="ph">Stage 6</span><b>Excel Power Query version</b><span class="st">Planned</span></li>
           </ol>
         </div>
-
-        <figure class="chart-card">
-          <figcaption><span class="ct">Growth of £1, January 2015 to December 2024</span><span class="cs">monthly log returns, compounded</span></figcaption>
-          <ul class="legend">
-            <li style="color:var(--s-2)"><i></i><span style="color:var(--text-2)">Minimum variance</span></li>
-            <li style="color:var(--s-1)"><i></i><span style="color:var(--text-2)">Equal weight</span></li>
-            <li style="color:var(--s-bench)"><i class="dash"></i><span style="color:var(--text-2)">FTSE 100 index</span></li>
-          </ul>
-          <div class="chart" id="growth"></div>
-          <details class="data">
-            <summary>View as table</summary>
-            <div class="table-wrap">
-              <table id="growth-table">
-                <thead><tr><th scope="col">month</th><th scope="col">min var</th><th scope="col">equal wt</th><th scope="col">FTSE</th></tr></thead>
-                <tbody></tbody>
-              </table>
-            </div>
-          </details>
-        </figure>
-
-        <div class="two">
-          <figure class="chart-card">
-            <figcaption><span class="ct">Where minimum variance put the money</span><span class="cs">long-only weights</span></figcaption>
-            <div style="position:relative"><ul class="hbars" id="weights" style="--lab:120px;--lab-sm:100px"></ul></div>
-          </figure>
-          <div>
-            <h4>What it found</h4>
-            <p class="prose">
-              Minimum variance had lower volatility and shallower drawdowns than the index across every regime.
-              It leaned into defensive, steady names like Unilever, LSEG and National Grid and dropped BP, BAT and Vodafone entirely.
-            </p>
-            <p class="prose">
-              The more interesting result was the correlation structure. Stocks that looked diversified in calm markets moved
-              together when COVID hit, which is exactly when diversification is supposed to help. <strong>The benefit disappeared when it was needed most.</strong>
-            </p>
-          </div>
-        </div>
-
-        <div class="caveat">
-          <h4>What I'd flag now, a year on</h4>
-          <p>The minimum variance weights were fitted on the full ten years and then scored on the same ten years. That's in-sample, so the chart above flatters it. Fixing exactly this problem is what the portfolio engine above is built around.</p>
-          <p>The index is the ^FTSE price series, so it leaves out the dividends that the adjusted stock prices include. That makes the gap to the index look bigger than it really is.</p>
-        </div>
       </div>
 
       <div class="project-foot">
+        <a class="btn primary" href="/ftse-portfolio/">Full breakdown <span class="down" aria-hidden="true">→</span></a>
         <a class="btn" href="https://github.com/conor8568/ftse-portfolio-analysis" target="_blank" rel="noopener noreferrer">Repository</a>
       </div>
     </article>
 
     <!-- ---------- PROJECT 3 ---------- -->
-    <article class="project reveal" aria-labelledby="p3">
+    <article class="project project-summary reveal" aria-labelledby="p3">
       <div class="project-head">
         <div class="meta">
           <span class="tag">Equity research · valuation</span>
@@ -378,41 +250,17 @@
           <div class="stat"><div class="k">Target</div><div class="v up">$55</div><div class="s">~38% implied upside</div></div>
           <div class="stat"><div class="k">Basis</div><div class="v">21×</div><div class="s">FY27E EPS $2.57</div></div>
         </div>
+      </div>
 
-        <div class="two">
-          <div>
-            <h4>The thesis</h4>
-            <p class="prose">The market has taken a bad patch and priced it as permanent decline. Nike is earnings-depressed, not distressed.</p>
-            <ul class="thesis">
-              <li><b>Demand doesn't go away.</b> Everyone needs footwear, and often. Nike is still the category leader across Nike, Jordan and Converse, and brand equity on that scale doesn't evaporate in two weak years.</li>
-              <li><b>Running is a tailwind.</b> On and Hoka took share, but Nike still has the distribution, athletes and R&amp;D to win it back.</li>
-              <li><b>Fashion moves fast.</b> Sneaker culture comes in waves. One strong product cycle could bring it back faster than the market is pricing.</li>
-              <li><b>A self-help turnaround.</b> Elliott Hill is resetting wholesale, clearing inventory and refocusing on sport-led product. That's the classic setup for margin recovery once comps normalise.</li>
-            </ul>
-          </div>
-          <div>
-            <h4>Valuation</h4>
-            <p class="prose">
-              At $40 Nike trades on 18.6× trailing earnings, half its ten-year average of 37×. The $55 target uses a deliberately
-              conservative 21× on FY27 EPS of $2.57, still below its own history and assuming only a partial recovery.
-              The street's consensus target of $50.66 suggests even cautious analysts think it's oversold, and a 4.2% dividend
-              yield with 20+ years of increases pays you to wait.
-            </p>
-            <h4 style="margin-top:22px">What would break it</h4>
-            <ul class="thesis risks">
-              <li>The turnaround takes years. JPMorgan sees FY2028 as stabilisation, not growth.</li>
-              <li>China stays weak (revenue −17% currency-neutral in Q4).</li>
-              <li>Share lost to On and Hoka turns out to be structural.</li>
-              <li>More margin pressure from tariffs and discounting.</li>
-            </ul>
-          </div>
-        </div>
-        <p class="muted mono" style="font-size:12px;margin:0">A student pitch written for a training programme, not investment advice.</p>
+      <div class="project-foot">
+        <a class="btn primary" href="/nike-stock-pitch/">Full breakdown <span class="down" aria-hidden="true">→</span></a>
+        <a class="btn" href="/assets/Conor_Linkston_Nike_Pitch.pdf" target="_blank" rel="noopener noreferrer">View the pitch</a>
+        <a class="btn dl" href="/assets/Conor_Linkston_Nike_Pitch.pdf" download="Conor_Linkston_Nike_Pitch.pdf"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0-3.2-3.2M8 10l3.2-3.2M3 13h10"/></svg>Pitch <span class="sub">PDF</span></a>
       </div>
     </article>
 
     <!-- ---------- PROJECT 4 ---------- -->
-    <article class="project reveal" aria-labelledby="p4">
+    <article class="project project-summary reveal" aria-labelledby="p4">
       <div class="project-head">
         <div class="meta">
           <span class="tag">Three-statement model · DCF · comps · sum of the parts · accretion/dilution</span>
@@ -435,14 +283,10 @@
           <div class="stat"><div class="k">Break-up</div><div class="v">−$8.35</div><div class="s">per share, like for like</div></div>
           <div class="stat"><div class="k">EA deal</div><div class="v">−19.3%</div><div class="s">EPS dilution in year one</div></div>
         </div>
+      </div>
 
-        <ol class="diag">
-          <li data-n="01"><b>The discount is real, but fragile.</b><p>Weighting the DCF and both trading multiples equally puts fair value 20% above the share price. But using peer medians instead of a mean dragged up by Netflix, both multiples legs fall to $77 and $89. The DCF upside also needs beta to stay at 0.45, when it only breaks even at 0.92.</p></li>
-          <li data-n="02"><b>The break-up case was comparing unlike numbers.</b><p>The segment DCFs add up to $144.47 a share, which looks better than the $132.98 standalone. But that's an enterprise value, and the standalone figure is equity. Take off $19.84 of net debt per share and the parts are worth $124.63, so splitting up destroys $8.35 a share. It's the same check I learned at Balfour Beatty: know what a number measures before you compare it.</p></li>
-          <li data-n="03"><b>EA doesn't pay for itself.</b><p>At a 30% premium Disney would be paying 73.6× EA's earnings with shares valued at 14.1×. The modelled $500m of synergies is worth about $5.3bn, a third of the $15.1bn premium. Justifying the price would take $1.43bn a year, nearly three times the modelled figure. The debt side is fine (leverage goes from 1.90× to 2.35× against a 3.0× covenant). The problem is the price.</p></li>
-        </ol>
-
-        <p class="muted mono" style="font-size:12px;margin:0">The case materials belong to AmplifyME, so the deck isn't posted here. The figures above come from my own model.</p>
+      <div class="project-foot">
+        <a class="btn primary" href="/disney-ma/">Full breakdown <span class="down" aria-hidden="true">→</span></a>
       </div>
     </article>
   </div>
@@ -699,8 +543,8 @@
   </div>
 </footer>
 
-<script src="assets/data.js?v=6"></script>
-<script src="assets/charts.js?v=6"></script>
-<script src="assets/site.js?v=12"></script>
+<script src="assets/data.js?v=13"></script>
+<script src="assets/charts.js?v=13"></script>
+<script src="assets/site.js?v=13"></script>
 </body>
 </html>

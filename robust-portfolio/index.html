@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0c0e0d">
+  <title>Robust Portfolio Optimisation Engine · Conor Linkston</title>
+  <meta name="description" content="A walk-forward backtest of whether sophisticated portfolio optimisation beats equal weight once estimation error is taken seriously.">
+  <link rel="canonical" href="https://conorlinkston.com/robust-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Robust Portfolio Optimisation Engine · Conor Linkston">
+  <meta property="og:description" content="A walk-forward backtest of whether sophisticated portfolio optimisation beats equal weight once estimation error is taken seriously.">
+  <meta property="og:image" content="https://conorlinkston.com/assets/og.png">
+  <meta property="og:url" content="https://conorlinkston.com/robust-portfolio/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230c0e0d'/%3E%3Ctext x='5' y='23' font-family='monospace' font-size='18' fill='%23e8b04a'%3Ecl%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css?v=13">
+  <script data-goatcounter="https://conorlinkston.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body class="subpage">
+<a class="skip" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true">
+  <canvas id="market"></canvas>
+  <svg class="skyline" viewBox="0 0 1200 210" preserveAspectRatio="xMidYMax slice">
+    <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+      <!-- low buildings, left -->
+      <path d="M0 200 V178 H22 V168 H44 V184 H58 V172"/>
+      <!-- Elizabeth Tower -->
+      <path d="M58 200 V100 H80 V200 M58 100 L69 64 L80 100 M69 64 V52 M58 118 H80"/><circle cx="69" cy="109" r="5.5"/>
+      <!-- London Eye -->
+      <circle cx="160" cy="128" r="60"/><circle cx="160" cy="128" r="4"/>
+      <path d="M160 68 V188 M100 128 H220 M118 86 L202 170 M202 86 L118 170 M130 76 L190 180 M190 76 L130 180 M108 98 L212 158 M212 98 L108 158 M160 128 L132 200 M160 128 L188 200"/>
+      <!-- mid buildings -->
+      <path d="M232 200 V160 H262 V148 H286 V170 H306 V156 H326 V200"/>
+      <!-- St Paul's -->
+      <path d="M338 200 V168 H414 V200 M350 168 V150 H402 V168 M352 150 Q376 96 400 150 M372 112 H380 V104 H372 Z M376 104 V92 M372 97 H380"/>
+      <!-- Walkie-Talkie -->
+      <path d="M456 200 L452 118 Q448 94 478 90 Q510 90 508 112 L502 200"/>
+      <!-- Cheesegrater -->
+      <path d="M526 200 V78 L580 200 M526 110 L541 110 M526 140 L554 140 M526 170 L567 170"/>
+      <!-- Gherkin -->
+      <path d="M598 200 C590 150 596 96 621 66 C646 96 652 150 644 200 M604 170 L638 130 M600 140 L630 104 M608 196 L644 160"/>
+      <!-- 22 Bishopsgate + towers -->
+      <path d="M660 200 V56 H694 V200 M700 200 V92 H722 V200"/>
+      <!-- The Shard -->
+      <path d="M748 200 L782 14 L790 14 L826 200 M782 14 L778 4 M790 14 L795 2 M768 90 L806 90"/>
+      <!-- low buildings -->
+      <path d="M836 200 V172 H862 V160 H880 V200"/>
+      <!-- Tower Bridge -->
+      <path d="M880 162 H1110 M930 200 V92 H956 V200 M930 92 L943 66 L956 92 M1034 200 V92 H1060 V200 M1034 92 L1047 66 L1060 92 M956 104 H1034 M956 112 H1034 M880 162 Q906 124 930 118 M1060 118 Q1084 124 1110 162 M930 132 H956 M1034 132 H1060"/>
+      <!-- low buildings, right -->
+      <path d="M1110 200 V176 H1136 V164 H1160 V182 H1182 V170 H1200"/>
+      <path d="M0 200 H1200"/>
+    </g>
+  </svg>
+</div>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="/">~/<span>conor</span><span class="full">-linkston</span></a>
+    <nav aria-label="Sections">
+      <a href="/#work" aria-current="true"><b>01</b>work</a>
+      <a href="/#experience"><b>02</b>experience</a>
+      <a href="/#education"><b>03</b>education</a>
+      <a href="/#beyond"><b>04</b>beyond</a>
+      <a href="/#record"><b>05</b>record</a>
+      <a href="/#contact"><b>06</b>contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="project-page">
+  <div class="wrap">
+    <p class="crumbs mono"><a href="/#work">← All work</a><span>Project 01 / 04</span></p>
+<!-- ---------- PROJECT 1 ---------- -->
+    <article class="project project-full" aria-labelledby="p1">
+      <div class="project-head">
+        <div class="meta">
+          <span class="tag">Python · pandas · NumPy · SciPy · pytest</span>
+          <span>2026</span>
+          <span class="status">Phase 1 complete</span>
+        </div>
+        <h3 class="title" id="p1">Robust Portfolio Optimisation Engine</h3>
+        <p class="prose">
+          Mean-variance optimisation is an error maximiser. It takes noisy estimates, trusts them completely,
+          and bets heavily on whatever looked best last year. I built a walk-forward backtester to measure
+          how much that actually costs, then tested two of the textbook fixes against each other on identical inputs.
+          It grew out of my second-year essay on Michaud's resampled efficiency as an answer to Markowitz.
+        </p>
+      </div>
+
+      <div class="project-body">
+        <div class="roadmap-wrap">
+          <h4>Roadmap</h4>
+          <ol class="roadmap" aria-label="Robust portfolio roadmap">
+          <li class="done"><span class="dot" aria-hidden="true"></span><span class="ph">Phase 0</span><b>Foundation and clean repo</b><span class="st">Done</span></li>
+          <li class="done"><span class="dot" aria-hidden="true"></span><span class="ph">Phase 1</span><b>Walk-forward backtester, Ledoit-Wolf, Michaud resampling</b><span class="st">Done</span></li>
+          <li class="next"><span class="dot" aria-hidden="true"></span><span class="ph">Phase 2</span><b>Regime awareness (Markov switching)</b><span class="st">Planned</span></li>
+          <li class="next"><span class="dot" aria-hidden="true"></span><span class="ph">Phase 3</span><b>LLM views into Black-Litterman</b><span class="st">Planned</span></li>
+          <li class="next"><span class="dot" aria-hidden="true"></span><span class="ph">Phase 4</span><b>Streamlit dashboard and research report</b><span class="st">Planned</span></li>
+          <li class="next"><span class="dot" aria-hidden="true"></span><span class="ph">Phase 5+</span><b>Explainability and a conversational agent</b><span class="st">Planned</span></li>
+          </ol>
+        </div>
+        <dl class="spec">
+          <div><dt>Universe</dt><dd>7 ETFs · equity, bonds, gold, property</dd></div>
+          <div><dt>Period</dt><dd>2005–2026 · 5,430 days</dd></div>
+          <div><dt>Lookback</dt><dd>252 days</dd></div>
+          <div><dt>Rebalance</dt><dd>monthly</dd></div>
+          <div><dt>Costs</dt><dd>10 bps turnover</dd></div>
+          <div><dt>Evaluation</dt><dd>walk-forward, out of sample</dd></div>
+        </dl>
+
+        <ol class="pipeline" aria-label="How the pipeline fits together">
+          <li><b>Price data</b><span>data/</span></li>
+          <li><b>Estimate inputs</b><span>estimation/</span></li>
+          <li><b>Choose weights</b><span>optimisation/</span></li>
+          <li><b>Backtest honestly</b><span>backtest/</span></li>
+          <li><b>Compare to benchmark</b><span>benchmarks/</span></li>
+          <li class="later"><b>AI market views</b><span>phase 3</span></li>
+        </ol>
+
+        <p class="callout">
+          Markowitz loses to equal weight, and not narrowly.
+          <small>It earns less while taking more risk: 18.4% volatility against 13.1%. That's the opposite of what a method built to optimise risk is supposed to do. It also traded 349% a year to get there.</small>
+        </p>
+
+        <div class="table-wrap">
+          <table class="rtable">
+            <caption>Out of sample, net of costs · reproduce with <code>python3 scripts/run_backtest.py</code></caption>
+            <thead><tr><th scope="col">strategy</th><th scope="col">ann. return</th><th scope="col">ann. vol</th><th scope="col">Sharpe</th><th scope="col">max DD</th><th scope="col">turnover</th></tr></thead>
+            <tbody>
+              <tr class="bench"><td>Equal weight (1/N)</td><td data-label="ann. return">7.86%</td><td data-label="ann. vol">13.10%</td><td data-label="Sharpe">0.643</td><td data-label="max DD">−36.7%</td><td data-label="turnover" class="win">2.4%</td></tr>
+              <tr><td>Markowitz (λ=3)</td><td data-label="ann. return">7.44%</td><td data-label="ann. vol">18.36%</td><td data-label="Sharpe">0.483</td><td data-label="max DD">−31.7%</td><td data-label="turnover">349%</td></tr>
+              <tr><td>Markowitz + Ledoit-Wolf</td><td data-label="ann. return">7.44%</td><td data-label="ann. vol">18.36%</td><td data-label="Sharpe">0.483</td><td data-label="max DD">−31.6%</td><td data-label="turnover">348%</td></tr>
+              <tr class="hl"><td>Markowitz + resampling</td><td data-label="ann. return" class="win">8.28%</td><td data-label="ann. vol">14.07%</td><td data-label="Sharpe">0.636</td><td data-label="max DD">−29.5%</td><td data-label="turnover">220%</td></tr>
+              <tr><td>Minimum variance</td><td data-label="ann. return">3.67%</td><td data-label="ann. vol" class="win">5.35%</td><td data-label="Sharpe" class="win">0.700</td><td data-label="max DD" class="win">−19.7%</td><td data-label="turnover">30.4%</td></tr>
+              <tr><td>Minimum variance + LW</td><td data-label="ann. return">3.59%</td><td data-label="ann. vol">5.32%</td><td data-label="Sharpe">0.689</td><td data-label="max DD">−19.8%</td><td data-label="turnover">29.9%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="two">
+          <div>
+            <h4>Why it loses</h4>
+            <ol class="diag">
+              <li data-n="01"><b>It isn't diversifying.</b><p>It holds 1.6 of 7 assets on average, with 85% in the biggest one. Every month it picks a favourite, piles in, and changes its mind the next month. That's not a portfolio, it's a sequence of bets.</p></li>
+              <li data-n="02"><b>Costs aren't the cause.</b><p>With costs switched off it still loses (0.502 vs 0.643). The decisions are bad, not just expensive.</p></li>
+              <li data-n="03"><b>The expected returns carry no signal.</b><p>In a typical window, not even the best-looking asset has a mean return distinguishable from zero (median largest |t| = 1.79, against 1.96). The covariance matrix is fine. The problem is μ.</p></li>
+            </ol>
+          </div>
+          <figure class="chart-card">
+            <figcaption><span class="ct">Which fix works</span><span class="cs">assets held above 1% weight, of 7</span></figcaption>
+            <div style="position:relative"><ul class="hbars" id="concentration" style="--lab:170px;--lab-sm:130px"></ul></div>
+            <p class="prose" style="font-size:14.5px;margin:14px 0 0">
+              Shrinkage is a correct implementation of a tool aimed at a problem this project doesn't have. It chose a median intensity of 0.055 and changed nothing.
+              Resampling goes after μ, and the optimiser goes from making one bet to holding a real portfolio.
+            </p>
+          </figure>
+        </div>
+
+        <div class="two">
+          <figure class="chart-card">
+            <figcaption><span class="ct">The risk-aversion sweep</span><span class="cs">Markowitz Sharpe by λ</span></figcaption>
+            <div class="chart" id="sweep"></div>
+          </figure>
+          <div>
+            <h4>Not reporting the best row</h4>
+            <p class="prose">
+              λ is the one number in the strategy I <strong>choose</strong> rather than estimate, so it's the easiest place to
+              fit the model to its own test set. I fixed λ=3 from the literature before running anything, then published the whole curve instead of the best result.
+            </p>
+            <p class="prose">
+              Performance improves the more the optimiser ignores its own return forecasts, steadily from λ=1 to λ=50.
+              One lucky value would be suspicious. A trend across a 50-fold range is a property of the data, and it points to the same conclusion as the diagnostics.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <h4>What I got wrong along the way</h4>
+          <ul class="lessons">
+            <li><b>The off-by-one</b>One character, <code>:t</code> against <code>:t+1</code>, separates a valid backtest from a fantasy. Nothing in the output would look wrong.</li>
+            <li><b>Forward-fill vs backfill</b><code>ffill()</code> and <code>bfill()</code> are one character apart, and one of them is lookahead bias with no visible symptom. There's now a test for it.</li>
+            <li><b>A test that couldn't fail</b>My first engine test passed because the rule meant to churn the portfolio never churned. Next time the test gets written before the engine.</li>
+          </ul>
+          <blockquote class="pull" style="margin-top:24px">
+            The dangerous errors here aren't the ones that crash. They're the ones that produce a plausible number.
+            <cite>findings.md, §12</cite>
+          </blockquote>
+        </div>
+
+        <div class="caveat">
+          <h4>Caveats, stated up front</h4>
+          <p>Resampling still doesn't beat 1/N. 0.636 against 0.643 is a tie at best, and 1/N gets there trading 2.4% a year instead of 220%. Minimum variance tops the Sharpe column by hiding 88% in bonds during an exceptional run for bonds. I've written my prediction for Phase 3 down in advance: it helps, but by less than resampling did.</p>
+        </div>
+      </div>
+
+      <div class="project-foot">
+        <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation" target="_blank" rel="noopener noreferrer">Repository</a>
+        <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation/blob/main/docs/findings.md" target="_blank" rel="noopener noreferrer">Research log</a>
+        <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation/blob/main/docs/ai-methodology.md" target="_blank" rel="noopener noreferrer">How I used AI</a>
+      </div>
+    </article>
+    <nav class="pager" aria-label="More projects"><span></span><a class="pg next" href="/ftse-portfolio/"><span class="mono">next →</span><b>FTSE 100 Analysis</b></a></nav>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Conor Linkston · West Lothian, Scotland</span>
+    <span>Hand-built. Charts drawn from my own project outputs.</span>
+  </div>
+</footer>
+
+<script src="/assets/data.js?v=13"></script>
+<script src="/assets/charts.js?v=13"></script>
+<script src="/assets/site.js?v=13"></script>
+</body>
+</html>

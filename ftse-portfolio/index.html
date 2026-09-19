@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0c0e0d">
+  <title>FTSE 100 Risk &amp; Portfolio Analysis · Conor Linkston</title>
+  <meta name="description" content="Ten years of FTSE 100 data, two long-only portfolios against the index, and what happened to diversification in a crisis.">
+  <link rel="canonical" href="https://conorlinkston.com/ftse-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="FTSE 100 Risk &amp; Portfolio Analysis · Conor Linkston">
+  <meta property="og:description" content="Ten years of FTSE 100 data, two long-only portfolios against the index, and what happened to diversification in a crisis.">
+  <meta property="og:image" content="https://conorlinkston.com/assets/og.png">
+  <meta property="og:url" content="https://conorlinkston.com/ftse-portfolio/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230c0e0d'/%3E%3Ctext x='5' y='23' font-family='monospace' font-size='18' fill='%23e8b04a'%3Ecl%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css?v=13">
+  <script data-goatcounter="https://conorlinkston.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body class="subpage">
+<a class="skip" href="#main">Skip to content</a>
+<div class="backdrop" aria-hidden="true">
+  <canvas id="market"></canvas>
+  <svg class="skyline" viewBox="0 0 1200 210" preserveAspectRatio="xMidYMax slice">
+    <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+      <!-- low buildings, left -->
+      <path d="M0 200 V178 H22 V168 H44 V184 H58 V172"/>
+      <!-- Elizabeth Tower -->
+      <path d="M58 200 V100 H80 V200 M58 100 L69 64 L80 100 M69 64 V52 M58 118 H80"/><circle cx="69" cy="109" r="5.5"/>
+      <!-- London Eye -->
+      <circle cx="160" cy="128" r="60"/><circle cx="160" cy="128" r="4"/>
+      <path d="M160 68 V188 M100 128 H220 M118 86 L202 170 M202 86 L118 170 M130 76 L190 180 M190 76 L130 180 M108 98 L212 158 M212 98 L108 158 M160 128 L132 200 M160 128 L188 200"/>
+      <!-- mid buildings -->
+      <path d="M232 200 V160 H262 V148 H286 V170 H306 V156 H326 V200"/>
+      <!-- St Paul's -->
+      <path d="M338 200 V168 H414 V200 M350 168 V150 H402 V168 M352 150 Q376 96 400 150 M372 112 H380 V104 H372 Z M376 104 V92 M372 97 H380"/>
+      <!-- Walkie-Talkie -->
+      <path d="M456 200 L452 118 Q448 94 478 90 Q510 90 508 112 L502 200"/>
+      <!-- Cheesegrater -->
+      <path d="M526 200 V78 L580 200 M526 110 L541 110 M526 140 L554 140 M526 170 L567 170"/>
+      <!-- Gherkin -->
+      <path d="M598 200 C590 150 596 96 621 66 C646 96 652 150 644 200 M604 170 L638 130 M600 140 L630 104 M608 196 L644 160"/>
+      <!-- 22 Bishopsgate + towers -->
+      <path d="M660 200 V56 H694 V200 M700 200 V92 H722 V200"/>
+      <!-- The Shard -->
+      <path d="M748 200 L782 14 L790 14 L826 200 M782 14 L778 4 M790 14 L795 2 M768 90 L806 90"/>
+      <!-- low buildings -->
+      <path d="M836 200 V172 H862 V160 H880 V200"/>
+      <!-- Tower Bridge -->
+      <path d="M880 162 H1110 M930 200 V92 H956 V200 M930 92 L943 66 L956 92 M1034 200 V92 H1060 V200 M1034 92 L1047 66 L1060 92 M956 104 H1034 M956 112 H1034 M880 162 Q906 124 930 118 M1060 118 Q1084 124 1110 162 M930 132 H956 M1034 132 H1060"/>
+      <!-- low buildings, right -->
+      <path d="M1110 200 V176 H1136 V164 H1160 V182 H1182 V170 H1200"/>
+      <path d="M0 200 H1200"/>
+    </g>
+  </svg>
+</div>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="/">~/<span>conor</span><span class="full">-linkston</span></a>
+    <nav aria-label="Sections">
+      <a href="/#work" aria-current="true"><b>01</b>work</a>
+      <a href="/#experience"><b>02</b>experience</a>
+      <a href="/#education"><b>03</b>education</a>
+      <a href="/#beyond"><b>04</b>beyond</a>
+      <a href="/#record"><b>05</b>record</a>
+      <a href="/#contact"><b>06</b>contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="project-page">
+  <div class="wrap">
+    <p class="crumbs mono"><a href="/#work">← All work</a><span>Project 02 / 04</span></p>
+<!-- ---------- PROJECT 2 ---------- -->
+    <article class="project project-full" aria-labelledby="p2">
+      <div class="project-head">
+        <div class="meta">
+          <span class="tag">R · tidyverse · tidyquant · quadprog · SQL</span>
+          <span>2025</span>
+          <span class="status wip">v2 in progress</span>
+        </div>
+        <h3 class="title" id="p2">FTSE 100 Risk &amp; Portfolio Analysis</h3>
+        <p class="prose">
+          My first proper project, built in R to get ahead of a tidyverse module. Ten years of FTSE 100 data
+          (2015–2025), twelve large caps, and two simple long-only portfolios measured against the index.
+          I picked the period on purpose: it covers QE-era low rates, the COVID shock, and the 2022–24 rate hikes,
+          because diversification that only works in calm markets isn't worth much.
+        </p>
+      </div>
+
+      <div class="project-body">
+        <div class="stats">
+          <div class="stat"><div class="k">Min variance</div><div class="v up">5.45%</div><div class="s">ann. return · 9.99% vol</div></div>
+          <div class="stat"><div class="k">Equal weight</div><div class="v">1.95%</div><div class="s">ann. return · 11.75% vol</div></div>
+          <div class="stat"><div class="k">FTSE 100</div><div class="v">1.95%</div><div class="s">ann. return · 12.22% vol</div></div>
+          <div class="stat"><div class="k">Sharpe (rf = 0)</div><div class="v">0.53</div><div class="s">vs 0.16 index · 0.16 EW</div></div>
+        </div>
+
+        <div class="roadmap-wrap">
+          <h4>Roadmap</h4>
+          <ol class="roadmap" aria-label="FTSE project roadmap">
+          <li class="done"><span class="dot" aria-hidden="true"></span><span class="ph">Stage 1</span><b>Data pull and log returns</b><span class="st">Done</span></li>
+          <li class="done"><span class="dot" aria-hidden="true"></span><span class="ph">Stage 2</span><b>Risk and correlation analysis</b><span class="st">Done</span></li>
+          <li class="done"><span class="dot" aria-hidden="true"></span><span class="ph">Stage 3</span><b>Equal-weight and minimum-variance portfolios</b><span class="st">Done</span></li>
+          <li class="done"><span class="dot" aria-hidden="true"></span><span class="ph">Stage 4</span><b>Charts and write-up</b><span class="st">Done</span></li>
+          <li class="now"><span class="dot" aria-hidden="true"></span><span class="ph">Stage 5</span><b>SQLite database: schema and loading</b><span class="st">In progress</span></li>
+          <li class="next"><span class="dot" aria-hidden="true"></span><span class="ph">Stage 6</span><b>Excel Power Query version</b><span class="st">Planned</span></li>
+          </ol>
+        </div>
+
+        <figure class="chart-card">
+          <figcaption><span class="ct">Growth of £1, January 2015 to December 2024</span><span class="cs">monthly log returns, compounded</span></figcaption>
+          <ul class="legend">
+            <li style="color:var(--s-2)"><i></i><span style="color:var(--text-2)">Minimum variance</span></li>
+            <li style="color:var(--s-1)"><i></i><span style="color:var(--text-2)">Equal weight</span></li>
+            <li style="color:var(--s-bench)"><i class="dash"></i><span style="color:var(--text-2)">FTSE 100 index</span></li>
+          </ul>
+          <div class="chart" id="growth"></div>
+          <details class="data">
+            <summary>View as table</summary>
+            <div class="table-wrap">
+              <table id="growth-table">
+                <thead><tr><th scope="col">month</th><th scope="col">min var</th><th scope="col">equal wt</th><th scope="col">FTSE</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </details>
+        </figure>
+
+        <div class="two">
+          <figure class="chart-card">
+            <figcaption><span class="ct">Where minimum variance put the money</span><span class="cs">long-only weights</span></figcaption>
+            <div style="position:relative"><ul class="hbars" id="weights" style="--lab:120px;--lab-sm:100px"></ul></div>
+          </figure>
+          <div>
+            <h4>What it found</h4>
+            <p class="prose">
+              Minimum variance had lower volatility and shallower drawdowns than the index across every regime.
+              It leaned into defensive, steady names like Unilever, LSEG and National Grid and dropped BP, BAT and Vodafone entirely.
+            </p>
+            <p class="prose">
+              The more interesting result was the correlation structure. Stocks that looked diversified in calm markets moved
+              together when COVID hit, which is exactly when diversification is supposed to help. <strong>The benefit disappeared when it was needed most.</strong>
+            </p>
+          </div>
+        </div>
+
+        <div class="caveat">
+          <h4>What I'd flag now, a year on</h4>
+          <p>The minimum variance weights were fitted on the full ten years and then scored on the same ten years. That's in-sample, so the chart above flatters it. Fixing exactly this problem is what the portfolio engine above is built around.</p>
+          <p>The index is the ^FTSE price series, so it leaves out the dividends that the adjusted stock prices include. That makes the gap to the index look bigger than it really is.</p>
+        </div>
+      </div>
+
+      <div class="project-foot">
+        <a class="btn" href="https://github.com/conor8568/ftse-portfolio-analysis" target="_blank" rel="noopener noreferrer">Repository</a>
+      </div>
+    </article>
+    <nav class="pager" aria-label="More projects"><a class="pg prev" href="/robust-portfolio/"><span class="mono">← previous</span><b>Robust Portfolio</b></a><a class="pg next" href="/nike-stock-pitch/"><span class="mono">next →</span><b>Nike Stock Pitch</b></a></nav>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Conor Linkston · West Lothian, Scotland</span>
+    <span>Hand-built. Charts drawn from my own project outputs.</span>
+  </div>
+</footer>
+
+<script src="/assets/data.js?v=13"></script>
+<script src="/assets/charts.js?v=13"></script>
+<script src="/assets/site.js?v=13"></script>
+</body>
+</html>
