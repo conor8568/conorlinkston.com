@@ -85,12 +85,12 @@
     </h1>
     <svg class="spark" viewBox="0 0 600 40" preserveAspectRatio="none" aria-hidden="true"><path id="spark-path" d=""/><circle id="spark-dot" r="3.5" cx="0" cy="0"/></svg>
     <p class="role"><span class="decode-line" data-text="Mathematics, Statistics & Finance · University of Strathclyde">Mathematics, Statistics &amp; Finance · University of Strathclyde</span></p>
-    <p class="lede">I test whether the clever answer beats the simple one, and <em>say so when it doesn't.</em></p>
+    <p class="lede">I build models to test ideas in finance, and I <em>report what they find</em>, not what I hoped they would.</p>
     <div class="links">
       <a class="btn primary" href="#work">See the work ↓</a>
-      <a class="btn" href="assets/Conor_Linkston_CV.pdf" download>CV (PDF) ↓</a>
-      <a class="btn" href="https://www.linkedin.com/in/conorlinkston" rel="noopener">linkedin</a>
-      <a class="btn" href="https://github.com/conor8568" rel="noopener">github</a>
+      <a class="btn dl" href="assets/Conor_Linkston_CV.pdf" download="Conor_Linkston_CV.pdf"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0-3.2-3.2M8 10l3.2-3.2M3 13h10"/></svg>Download CV <span class="sub">PDF</span></a>
+      <a class="btn" href="https://www.linkedin.com/in/conorlinkston" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a class="btn" href="https://github.com/conor8568" target="_blank" rel="noopener noreferrer">GitHub</a>
     </div>
   </div>
 
@@ -129,34 +129,6 @@
   </div>
 </div>
 
-<!-- ============================ HOW I WORK ============================ -->
-<section class="block">
-  <div class="wrap">
-    <p class="label reveal"><b>00</b> how i work</p>
-    <p class="big reveal" style="max-width:38em">
-      I study maths, stats and finance, and I build things on the side to learn the parts a module
-      doesn't get to. Three habits run through all of it.
-    </p>
-    <div class="principles reveal">
-      <div>
-        <span class="n">01</span>
-        <h3>Always benchmark</h3>
-        <p>A result means nothing without something simple next to it. Every strategy I test goes up against equal weight, and if the clever one loses, that is the finding.</p>
-      </div>
-      <div>
-        <span class="n">02</span>
-        <h3>Say what a metric measures first</h3>
-        <p>I learned this one the hard way at Balfour Beatty (more below). Before I put a number in front of someone I check that it's actually comparing like with like.</p>
-      </div>
-      <div>
-        <span class="n">03</span>
-        <h3>AI as a tool, not a worker</h3>
-        <p>I use AI agents to write a lot of code, and I hold myself to being able to defend every line of it. I write down what I corrected, what I rejected and where I went elsewhere.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ============================ WORK ============================ -->
 <section class="block" id="work">
   <div class="wrap">
@@ -182,6 +154,17 @@
       </div>
 
       <div class="project-body">
+        <div class="roadmap-wrap">
+          <h4>Roadmap</h4>
+          <ol class="roadmap" aria-label="Robust portfolio roadmap">
+          <li class="done"><span class="dot" aria-hidden="true"></span><span class="ph">Phase 0</span><b>Foundation and clean repo</b><span class="st">Done</span></li>
+          <li class="done"><span class="dot" aria-hidden="true"></span><span class="ph">Phase 1</span><b>Walk-forward backtester, Ledoit-Wolf, Michaud resampling</b><span class="st">Done</span></li>
+          <li class="next"><span class="dot" aria-hidden="true"></span><span class="ph">Phase 2</span><b>Regime awareness (Markov switching)</b><span class="st">Planned</span></li>
+          <li class="next"><span class="dot" aria-hidden="true"></span><span class="ph">Phase 3</span><b>LLM views into Black-Litterman</b><span class="st">Planned</span></li>
+          <li class="next"><span class="dot" aria-hidden="true"></span><span class="ph">Phase 4</span><b>Streamlit dashboard and research report</b><span class="st">Planned</span></li>
+          <li class="next"><span class="dot" aria-hidden="true"></span><span class="ph">Phase 5+</span><b>Explainability and a conversational agent</b><span class="st">Planned</span></li>
+          </ol>
+        </div>
         <dl class="spec">
           <div><dt>Universe</dt><dd>7 ETFs · equity, bonds, gold, property</dd></div>
           <div><dt>Period</dt><dd>2005–2026 · 5,430 days</dd></div>
@@ -272,14 +255,14 @@
 
         <div class="caveat">
           <h4>Caveats, stated up front</h4>
-          <p>Resampling still doesn't beat 1/N. 0.636 against 0.643 is a tie at best, and 1/N gets there trading 2.4% a year instead of 220%. Minimum variance tops the Sharpe column by hiding 88% in bonds during an exceptional run for bonds. Next up: regime awareness (Phase 2), then LLM-generated views into Black-Litterman (Phase 3), evaluated out of sample like everything else. I've written my prediction for Phase 3 down in advance: it helps, but by less than resampling did.</p>
+          <p>Resampling still doesn't beat 1/N. 0.636 against 0.643 is a tie at best, and 1/N gets there trading 2.4% a year instead of 220%. Minimum variance tops the Sharpe column by hiding 88% in bonds during an exceptional run for bonds. I've written my prediction for Phase 3 down in advance: it helps, but by less than resampling did.</p>
         </div>
       </div>
 
       <div class="project-foot">
-        <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation" rel="noopener">Repository →</a>
-        <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation/blob/main/docs/findings.md" rel="noopener">Research log</a>
-        <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation/blob/main/docs/ai-methodology.md" rel="noopener">How I used AI</a>
+        <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation" target="_blank" rel="noopener noreferrer">Repository</a>
+        <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation/blob/main/docs/findings.md" target="_blank" rel="noopener noreferrer">Research log</a>
+        <a class="btn" href="https://github.com/conor8568/robust-portfolio-optimisation/blob/main/docs/ai-methodology.md" target="_blank" rel="noopener noreferrer">How I used AI</a>
       </div>
     </article>
 
@@ -306,6 +289,18 @@
           <div class="stat"><div class="k">Equal weight</div><div class="v">1.95%</div><div class="s">ann. return · 11.75% vol</div></div>
           <div class="stat"><div class="k">FTSE 100</div><div class="v">1.95%</div><div class="s">ann. return · 12.22% vol</div></div>
           <div class="stat"><div class="k">Sharpe (rf = 0)</div><div class="v">0.53</div><div class="s">vs 0.16 index · 0.16 EW</div></div>
+        </div>
+
+        <div class="roadmap-wrap">
+          <h4>Roadmap</h4>
+          <ol class="roadmap" aria-label="FTSE project roadmap">
+          <li class="done"><span class="dot" aria-hidden="true"></span><span class="ph">Stage 1</span><b>Data pull and log returns</b><span class="st">Done</span></li>
+          <li class="done"><span class="dot" aria-hidden="true"></span><span class="ph">Stage 2</span><b>Risk and correlation analysis</b><span class="st">Done</span></li>
+          <li class="done"><span class="dot" aria-hidden="true"></span><span class="ph">Stage 3</span><b>Equal-weight and minimum-variance portfolios</b><span class="st">Done</span></li>
+          <li class="done"><span class="dot" aria-hidden="true"></span><span class="ph">Stage 4</span><b>Charts and write-up</b><span class="st">Done</span></li>
+          <li class="now"><span class="dot" aria-hidden="true"></span><span class="ph">Stage 5</span><b>SQLite database: schema and loading</b><span class="st">In progress</span></li>
+          <li class="next"><span class="dot" aria-hidden="true"></span><span class="ph">Stage 6</span><b>Excel Power Query version</b><span class="st">Planned</span></li>
+          </ol>
         </div>
 
         <figure class="chart-card">
@@ -349,12 +344,11 @@
           <h4>What I'd flag now, a year on</h4>
           <p>The minimum variance weights were fitted on the full ten years and then scored on the same ten years. That's in-sample, so the chart above flatters it. Fixing exactly this problem is what the portfolio engine above is built around.</p>
           <p>The index is the ^FTSE price series, so it leaves out the dividends that the adjusted stock prices include. That makes the gap to the index look bigger than it really is.</p>
-          <p>v2, currently on a branch, moves the pipeline into a SQLite database with a proper schema and adds an Excel Power Query version of the analysis.</p>
         </div>
       </div>
 
       <div class="project-foot">
-        <a class="btn" href="https://github.com/conor8568/ftse-portfolio-analysis" rel="noopener">Repository →</a>
+        <a class="btn" href="https://github.com/conor8568/ftse-portfolio-analysis" target="_blank" rel="noopener noreferrer">Repository</a>
       </div>
     </article>
 
@@ -367,9 +361,10 @@
           <span>AmplifyME Summer Analyst Programme</span>
         </div>
         <h3 class="title" id="p3">Nike: just buy it</h3>
+        <p class="win"><span class="trophy" aria-hidden="true">★</span>Best stock pitch in the cohort<span class="win-sub">breakout team placed 2nd</span></p>
         <p class="prose">
-          A contrarian stock pitch, picked as the best in the cohort. I presented it to the full group and defended it under questioning,
-          then led a breakout team that developed it further and placed 2nd.
+          A contrarian stock pitch. I presented it to the full group and defended it under questioning,
+          then led a breakout team that developed it further.
         </p>
       </div>
 
@@ -419,12 +414,12 @@
         <div class="meta">
           <span class="tag">Three-statement model · DCF · comps · sum of the parts · accretion/dilution</span>
           <span>Sep 2026</span>
-          <span class="status">1st of 66</span>
         </div>
         <h3 class="title" id="p4">Disney: worth more in pieces?</h3>
+        <p class="win"><span class="trophy" aria-hidden="true">★</span>1st of 66<span class="win-sub">fastest to finish · 100% accuracy</span></p>
         <p class="prose">
           AmplifyME's 24-hour M&amp;A challenge. The brief was a full valuation of Disney, a test of whether a three-way
-          break-up unlocks value, and a look at buying Electronic Arts. My model came 1st of 66: fastest to finish, with 100% on accuracy.
+          break-up unlocks value, and a look at buying Electronic Arts.
           The question underneath it all: is Disney worth more as three businesses than as one, and if the market is discounting it,
           is buying EA a better use of its shares?
         </p>
@@ -557,8 +552,8 @@
       <div class="bcard wide">
         <span class="k">Societies</span>
         <ul class="soc">
-          <li><b>Strathclyde Trading Society</b></li>
-          <li><b>Strathclyde Finance &amp; Accounting Society</b></li>
+          <li><b>Strathclyde Trading Society</b><span class="pos">Associate</span></li>
+          <li><b>Strathclyde Finance &amp; Accounting Society</b><span class="pos">Associate</span></li>
         </ul>
       </div>
       <div class="bcard">
@@ -589,7 +584,7 @@
   <div class="wrap">
     <p class="label reveal"><b>05</b> record</p>
     <h2 class="reveal">Awards &amp; certifications</h2>
-    <p class="prose reveal">Hover over a card or tap it to see the full certificate. Scroll the strip sideways or use the arrows.</p>
+    <p class="prose reveal">Hover over or tap an award to see the certificate.</p>
 
     <div class="showcase reveal">
       <div class="viewer">
@@ -629,35 +624,30 @@
             data-issuer="CFA Institute × AmplifyME" data-date="December 2025"
             data-title="Global Finalist, Investing Simulator Challenge"
             data-desc="Top 10% globally out of thousands of entrants in an asset management simulation run by CFA Institute and AmplifyME.">
-          <span class="thumb"><img src="assets/cfa-finalist.jpg" alt="" width="764" height="540" loading="lazy"></span>
           <span class="ct">Global Finalist</span><span class="cm">CFA Institute · Dec 2025</span>
         </button></li>
         <li><button type="button" class="card-btn" data-show="cfa-completion"
             data-issuer="CFA Institute × AmplifyME" data-date="November 2025"
             data-title="Investing Simulator Challenge, Certificate of Completion"
             data-desc="Awarded for taking part in the CFA Institute Investing Simulator Challenge. A month later I was selected as a global finalist.">
-          <span class="thumb"><img src="assets/cert-cfa-completion.jpg" alt="" width="1176" height="816" loading="lazy"></span>
           <span class="ct">Investing Simulator Challenge</span><span class="cm">CFA Institute · Nov 2025</span>
         </button></li>
         <li><button type="button" class="card-btn" data-show="libf"
             data-issuer="AmplifyME × LIBF" data-date="September 2026"
             data-title="Level 6 Diploma in Applied Finance, with Distinction"
             data-desc="Awarded through the AmplifyME Summer Analyst programme and accredited by the London Institute of Banking &amp; Finance.">
-          <span class="thumb"><img class="portrait" src="assets/cert-libf.jpg" alt="" width="1132" height="1600" loading="lazy"></span>
           <span class="ct">Level 6 Diploma · Distinction</span><span class="cm">LIBF · Sep 2026</span>
         </button></li>
         <li><button type="button" class="card-btn" data-show="forage"
             data-issuer="Goldman Sachs × Forage" data-date="September 2026"
             data-title="Operations Job Simulation"
             data-desc="Practical tasks on the foundations of operations and on facilitating ultra-high-net-worth transactions.">
-          <span class="thumb"><img src="assets/cert-forage.jpg" alt="" width="1600" height="1130" loading="lazy"></span>
           <span class="ct">Operations Job Simulation</span><span class="cm">Goldman Sachs · Sep 2026</span>
         </button></li>
         <li><button type="button" class="card-btn" data-show="powerbi"
             data-issuer="Financial Edge" data-date="September 2026"
             data-title="Getting Started with Power BI"
             data-desc="Financial Edge training playlist introducing Power BI for reporting and dashboards.">
-          <span class="thumb"><img src="assets/cert-powerbi.jpg" alt="" width="1600" height="1131" loading="lazy"></span>
           <span class="ct">Getting Started with Power BI</span><span class="cm">Financial Edge · Sep 2026</span>
         </button></li>
       </ul>
@@ -688,9 +678,9 @@
         <p class="prose reveal">I'm looking for 2027 summer internships in finance. If something here is relevant to what your team does, I'd be glad to talk it through.</p>
         <p class="reveal" style="margin-top:28px"><a class="big-link" href="mailto:conorlinkston@icloud.com">conorlinkston@icloud.com</a></p>
         <div class="links reveal" style="margin-top:28px">
-          <a class="btn primary" href="assets/Conor_Linkston_CV.pdf" download>Download CV (PDF) ↓</a>
-          <a class="btn" href="https://www.linkedin.com/in/conorlinkston" rel="noopener">linkedin.com/in/conorlinkston</a>
-          <a class="btn" href="https://github.com/conor8568" rel="noopener">github.com/conor8568</a>
+          <a class="btn primary dl" href="assets/Conor_Linkston_CV.pdf" download="Conor_Linkston_CV.pdf"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0-3.2-3.2M8 10l3.2-3.2M3 13h10"/></svg>Download CV <span class="sub">PDF</span></a>
+          <a class="btn" href="https://www.linkedin.com/in/conorlinkston" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a class="btn" href="https://github.com/conor8568" target="_blank" rel="noopener noreferrer">GitHub</a>
         </div>
       </div>
     </div>
