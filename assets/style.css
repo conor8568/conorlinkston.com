@@ -738,3 +738,28 @@ a[target="_blank"]:hover::after { transform: translate(2px, -2px); opacity: 1; }
 @media (max-width: 760px) {
   .bar nav { mask-image: linear-gradient(to right, transparent, #000 14px, #000 calc(100% - 28px), transparent); -webkit-mask-image: linear-gradient(to right, transparent, #000 14px, #000 calc(100% - 28px), transparent); padding-left: 10px; }
 }
+
+/* landing detail: candles of the FTSE min-variance portfolio */
+.candles { margin: clamp(8px, 1.4vh, 16px) 0 clamp(12px, 2.4vh, 24px); width: min(640px, 100%); }
+#candles { display: block; width: 100%; height: clamp(36px, 6.5vh, 64px); overflow: visible; }
+#candles g { opacity: 0; transform: scaleY(.2); transition: opacity .25s, transform .35s cubic-bezier(.3, 1.4, .5, 1); }
+#candles g.on { opacity: 1; transform: none; }
+#candles line { stroke-width: 1; vector-effect: non-scaling-stroke; }
+#candles .up rect { fill: #5fcf86; } #candles .up line { stroke: #5fcf86; }
+#candles .dn rect { fill: #ec7a6a; } #candles .dn line { stroke: #ec7a6a; }
+#candles .up, #candles .dn { filter: saturate(.85); }
+#candles g.on:not(.last) { opacity: .72; }
+#candles g.last rect { fill: var(--accent); } #candles g.last line { stroke: var(--accent); }
+#candles g.last { filter: drop-shadow(0 0 6px #e8b04acc); animation: last-glow 2.4s ease-in-out infinite; }
+@keyframes last-glow { 50% { filter: drop-shadow(0 0 2px #e8b04a66); } }
+#candles .ma { fill: none; stroke: var(--accent); stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; opacity: .9; }
+.candles figcaption { margin-top: 8px; font-size: 11px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.candles figcaption .tag { color: var(--accent); border: 1px solid #e8b04a55; border-radius: 3px; padding: 0 5px; letter-spacing: .06em; }
+.candles figcaption b { color: var(--good); font-weight: 500; }
+@media (prefers-reduced-motion: reduce) { #candles g { transition: none; } #candles g.last { animation: none; } }
+.candles { width: 100%; max-width: 100%; }
+#candles { height: clamp(48px, 9vh, 92px); }
+#candles g.on:not(.last) { opacity: .9; }
+.candles figcaption { flex-wrap: nowrap; white-space: nowrap; }
+.candles figcaption .cap { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+@media (max-width: 520px) { .candles figcaption .cap-x { display: none; } }

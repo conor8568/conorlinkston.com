@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=8">
+  <link rel="stylesheet" href="assets/style.css?v=11">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -83,7 +83,10 @@
       <span class="decode" data-text="Conor" aria-hidden="true">Conor</span>
       <span class="decode" data-text="Linkston" aria-hidden="true">Linkston</span><span class="dot" aria-hidden="true">.</span>
     </h1>
-    <svg class="spark" viewBox="0 0 600 40" preserveAspectRatio="none" aria-hidden="true"><path id="spark-path" d=""/><circle id="spark-dot" r="3.5" cx="0" cy="0"/></svg>
+    <figure class="candles" aria-label="Quarterly candlestick chart of my FTSE minimum-variance portfolio, 2015 to 2024, growing from £1.00 to £1.69">
+      <svg id="candles" viewBox="0 0 960 96" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <figcaption class="mono"><span class="tag">MINVAR</span><span class="cap">my FTSE min-variance portfolio<span class="cap-x"> · quarterly</span> · 2015–24</span><b id="candle-last">£1.69</b></figcaption>
+    </figure>
     <p class="role"><span class="decode-line" data-text="Mathematics, Statistics & Finance · University of Strathclyde">Mathematics, Statistics &amp; Finance · University of Strathclyde</span></p>
     <p class="lede">I build models to test ideas in finance, and I <em>report what they find</em>, not what I hoped they would.</p>
     <div class="links">
@@ -698,6 +701,6 @@
 
 <script src="assets/data.js?v=6"></script>
 <script src="assets/charts.js?v=6"></script>
-<script src="assets/site.js?v=6"></script>
+<script src="assets/site.js?v=12"></script>
 </body>
 </html>

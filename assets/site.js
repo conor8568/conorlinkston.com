@@ -52,32 +52,62 @@
   const role = document.querySelector(".hero .decode-line");
   if (role) decode(role, { delay: 900, stagger: 12, spin: 260 });
 
-  // the name gets a price line drawn underneath it
-  const sparkPath = document.getElementById("spark-path"), sparkDot = document.getElementById("spark-dot");
-  if (sparkPath) {
-    const n = 70, pts = [];
-    let y = 28;
-    for (let i = 0; i < n; i++) {
-      y += (Math.random() - 0.56) * 5.2;          // slight upward drift
-      y = Math.max(6, Math.min(36, y));
-      if (i > n - 8) y = Math.max(4, y - 1.6);      // finish strong
-      pts.push([(i / (n - 1)) * 600, y]);
+  // under the name: quarterly candles built from my own FTSE minimum-variance portfolio
+  const cs = document.getElementById("candles");
+  if (cs && window.FTSE_GROWTH) {
+    const NS = "http://www.w3.org/2000/svg";
+    const mk = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); parent.appendChild(n); return n; };
+    const series = window.FTSE_GROWTH.map((d) => d.MinVariance);
+    const q = [];
+    for (let i = 1; i < series.length; i += 3) {
+      const chunk = series.slice(i, i + 3), open = series[i - 1], close = chunk[chunk.length - 1];
+      q.push({ open, close, high: Math.max(open, ...chunk), low: Math.min(open, ...chunk) });
     }
-    const draw = (k) => {
-      const seg = pts.slice(0, Math.max(2, k));
-      sparkPath.setAttribute("d", seg.map((p, i) => `${i ? "L" : "M"}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(""));
-      const e = seg[seg.length - 1];
-      sparkDot.setAttribute("cx", e[0]); sparkDot.setAttribute("cy", e[1]);
+    const W = 960, H = 96, pad = 4;
+    const lo = Math.min(...q.map((c) => c.low)), hi = Math.max(...q.map((c) => c.high));
+    const y = (v) => pad + (H - 2 * pad) * (1 - (v - lo) / (hi - lo));
+    const step = W / q.length, bw = Math.max(3, step * 0.56);
+    // 4-quarter moving average of the close
+    const ma = q.map((c, i) => { const w = q.slice(Math.max(0, i - 3), i + 1); return w.reduce((s, x) => s + x.close, 0) / w.length; });
+    const defs = mk("defs", {}, cs), grad = mk("linearGradient", { id: "ma-fill", x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+    mk("stop", { offset: "0", "stop-color": "#e8b04a", "stop-opacity": ".22" }, grad);
+    mk("stop", { offset: "1", "stop-color": "#e8b04a", "stop-opacity": "0" }, grad);
+    const area = mk("path", { class: "ma-area", d: "", fill: "url(#ma-fill)" }, cs);
+    const maPath = mk("path", { class: "ma", d: "" }, cs);
+    const groups = q.map((c, i) => {
+      const x = i * step + step / 2, up = c.close >= c.open;
+      const g = mk("g", { class: up ? "up" : "dn" }, cs);
+      mk("line", { x1: x, x2: x, y1: y(c.high), y2: y(c.low) }, g);
+      const top = y(Math.max(c.open, c.close)), h = Math.max(1.5, Math.abs(y(c.open) - y(c.close)));
+      mk("rect", { x: x - bw / 2, y: top, width: bw, height: h, rx: 1 }, g);
+      g.style.transformOrigin = `${x}px ${y((c.open + c.close) / 2)}px`;
+      return g;
+    });
+    cs.insertBefore(maPath, null);
+    const lastG = groups[groups.length - 1];
+    const drawMA = (k) => {
+      const pts = ma.slice(0, k).map((v, i) => [(i * step + step / 2).toFixed(1), y(v).toFixed(1)]);
+      const line = pts.map((p, i) => `${i ? "L" : "M"}${p[0]},${p[1]}`).join("");
+      maPath.setAttribute("d", line);
+      if (pts.length > 1) area.setAttribute("d", `${line}L${pts[pts.length - 1][0]},${H}L${pts[0][0]},${H}Z`);
     };
-    if (still) draw(n);
+    // match the chart's width to the name above it
+    const fit = () => {
+      const fig = cs.parentElement, words = [...document.querySelectorAll(".hero-name .decode, .hero-name .dot")];
+      if (!words.length) return;
+      const left = fig.getBoundingClientRect().left, right = Math.max(...words.map((w) => w.getBoundingClientRect().right));
+      cs.style.width = Math.min(right - left, fig.clientWidth) + "px";
+    };
+    (document.fonts?.ready || Promise.resolve()).then(fit); addEventListener("resize", fit);
+    if (still) { groups.forEach((g) => g.classList.add("on")); drawMA(ma.length); lastG.classList.add("last"); }
     else {
-      const t0 = performance.now() + 700, dur = 1300;
+      const t0 = performance.now() + 650, per = 32;
       const tick = (now) => {
-        const p = Math.min(1, Math.max(0, (now - t0) / dur));
-        draw(Math.round(2 + (1 - (1 - p) ** 3) * (n - 2)));
-        if (p < 1) requestAnimationFrame(tick);
+        const k = Math.min(q.length, Math.max(0, Math.floor((now - t0) / per) + 1));
+        for (let i = 0; i < k; i++) groups[i].classList.add("on");
+        drawMA(k);
+        if (k < q.length) requestAnimationFrame(tick); else lastG.classList.add("last");
       };
-      draw(2);
       requestAnimationFrame(tick);
     }
   }
