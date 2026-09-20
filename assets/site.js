@@ -112,27 +112,6 @@
     }
   }
 
-  /* ---------- status bar: live Glasgow time and whether the LSE is trading ---------- */
-  const clock = document.getElementById("clock"), lse = document.getElementById("lse");
-  if (clock && lse) {
-    const state = lse.querySelector(".sb-state");
-    const tick = () => {
-      const now = new Date();
-      const uk = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
-      clock.textContent = uk.format(now);
-      const parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false })
-        .formatToParts(now).reduce((o, p) => ((o[p.type] = p.value), o), {});
-      const mins = +parts.hour * 60 + +parts.minute;
-      const weekday = !["Sat", "Sun"].includes(parts.weekday);
-      const open = weekday && mins >= 480 && mins < 990;          // 08:00–16:30 London
-      lse.classList.toggle("open", open);
-      lse.classList.toggle("shut", !open);
-      state.textContent = open ? "open" : "closed";
-    };
-    tick();
-    setInterval(tick, 1000);
-  }
-
   /* ---------- backdrop: faint random-walk price paths drifting left ---------- */
   const cv = document.getElementById("market");
   if (cv) {

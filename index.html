@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=16">
+  <link rel="stylesheet" href="assets/style.css?v=15">
   <script data-goatcounter="https://conorlinkston.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
@@ -78,46 +78,31 @@
 <!-- ============================ HERO ============================ -->
 <section class="hero" id="top">
   <div class="glow" aria-hidden="true"></div>
-
-  <div class="wrap statusbar">
-    <span class="sb-item sb-status"><i aria-hidden="true"></i>Open to 2027 summer internships</span>
-    <span class="sb-item"><b>Available</b> Jun–Sep 2027</span>
-    <span class="sb-item"><b>Glasgow</b> <time id="clock">--:--:--</time></span>
-    <span class="sb-item" id="lse"><b>LSE</b> <span class="sb-state">—</span></span>
+  <div class="wrap hero-inner">
+    <p class="avail"><i aria-hidden="true"></i>Open to 2027 summer internships</p>
+    <h1 class="hero-name" aria-label="Conor Linkston">
+      <span class="decode" data-text="Conor" aria-hidden="true">Conor</span>
+      <span class="decode" data-text="Linkston" aria-hidden="true">Linkston</span><span class="dot" aria-hidden="true">.</span>
+    </h1>
+    <figure class="candles" aria-label="Quarterly candlestick chart of my FTSE minimum-variance portfolio, 2015 to 2024, growing from £1.00 to £1.69">
+      <svg id="candles" viewBox="0 0 960 96" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <figcaption class="mono"><span class="tag">MINVAR</span><span class="cap">my FTSE min-variance portfolio<span class="cap-x"> · quarterly</span> · 2015–24</span><b id="candle-last">£1.69</b></figcaption>
+    </figure>
+    <p class="role"><span class="decode-line" data-text="Mathematics, Statistics & Finance · University of Strathclyde">Mathematics, Statistics &amp; Finance · University of Strathclyde</span></p>
+    <p class="lede">I build models to test ideas in finance, and I <em>report what they find</em>, not what I hoped they would.</p>
+    <div class="links">
+      <a class="btn primary" href="#work">See the work <span class="down" aria-hidden="true">↓</span></a>
+      <a class="btn dl" href="assets/Conor_Linkston_CV.pdf" download="Conor_Linkston_CV.pdf"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0-3.2-3.2M8 10l3.2-3.2M3 13h10"/></svg>Download CV <span class="sub">PDF</span></a>
+      <a class="btn" href="https://www.linkedin.com/in/conorlinkston" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a class="btn" href="https://github.com/conor8568" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
   </div>
 
-  <div class="wrap hero-inner">
-    <div class="hero-main">
-      <h1 class="hero-name" aria-label="Conor Linkston">
-        <span class="decode" data-text="Conor" aria-hidden="true">Conor</span>
-        <span class="decode" data-text="Linkston" aria-hidden="true">Linkston</span><span class="dot" aria-hidden="true">.</span>
-      </h1>
-      <figure class="candles" aria-label="Quarterly candlestick chart of my FTSE minimum-variance portfolio, 2015 to 2024, growing from £1.00 to £1.69">
-        <svg id="candles" viewBox="0 0 960 96" preserveAspectRatio="none" aria-hidden="true"></svg>
-        <figcaption class="mono"><span class="tag">MINVAR</span><span class="cap">my FTSE min-variance portfolio<span class="cap-x"> · quarterly</span> · 2015–24</span><b id="candle-last">£1.69</b></figcaption>
-      </figure>
-      <p class="role"><span class="decode-line" data-text="Mathematics, Statistics & Finance · University of Strathclyde">Mathematics, Statistics &amp; Finance · University of Strathclyde</span></p>
-      <p class="lede">I build models to test ideas in finance, and I <em>report what they find</em>, not what I hoped they would.</p>
-      <div class="links">
-        <a class="btn primary" href="#work">See the work <span class="down" aria-hidden="true">↓</span></a>
-        <a class="btn dl" href="assets/Conor_Linkston_CV.pdf" download="Conor_Linkston_CV.pdf"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0-3.2-3.2M8 10l3.2-3.2M3 13h10"/></svg>Download CV <span class="sub">PDF</span></a>
-        <a class="btn" href="https://www.linkedin.com/in/conorlinkston" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a class="btn" href="https://github.com/conor8568" target="_blank" rel="noopener noreferrer">GitHub</a>
-      </div>
-    </div>
-
-    <aside class="factsheet" aria-label="Factsheet">
-      <h2 class="fs-head mono">Factsheet</h2>
-      <dl>
-        <div><dt>Class</dt><dd>BSc Mathematics, Statistics &amp; Finance · Year 3</dd></div>
-        <div><dt>Focus</dt><dd>Portfolio construction · equity research</dd></div>
-        <div><dt>Stack</dt><dd>Python · R · SQL · Excel</dd></div>
-        <div><dt>Based</dt><dd>Glasgow, Scotland</dd></div>
-        <div><dt>Inception</dt><dd>Strathclyde, Sep 2024</dd></div>
-        <div><dt>Now building</dt><dd class="wip">FTSE pipeline into SQLite</dd></div>
-      </dl>
-      <a class="fs-link mono" href="#work">All four projects ↓</a>
-    </aside>
+  <div class="wrap hero-stats" aria-label="Headline numbers">
+    <div><span class="count" data-to="1" data-suffix="st">1st</span><small>of 66 · 24h M&amp;A challenge</small></div>
+    <div><span class="count" data-to="10" data-prefix="top " data-suffix="%">top 10%</span><small>CFA Institute global finalist</small></div>
+    <div><span class="count" data-to="97" data-suffix="%">97%</span><small>Maths &amp; Stats Computing</small></div>
+    <div><span class="count" data-to="10" data-prefix="&gt;" data-suffix="×">&gt;10×</span><small>my P&amp;L vs 4th place · trading sim</small></div>
   </div>
 </section>
 
@@ -560,6 +545,6 @@
 
 <script src="assets/data.js?v=13"></script>
 <script src="assets/charts.js?v=13"></script>
-<script src="assets/site.js?v=16"></script>
+<script src="assets/site.js?v=14"></script>
 </body>
 </html>
